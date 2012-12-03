@@ -1,0 +1,74 @@
+<html><head><title>Upload</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<style type="text/css">
+body {
+  font-size:9pt;
+  color:#202020; 
+  font-family:sans-serif;  
+  padding:0px; 
+  background-color:#F1E9C1;
+  margin:0;
+  padding:0;
+  }
+
+a {
+  font-size:9pt;
+  color:#000252; 
+  font-family:sans-serif; 
+  text-decoration:none!important;
+  }
+  
+a:hover {
+  text-decoration:underline!important;
+  }
+  
+h1,h2,p{padding:0px 15px 0px 15px;}
+
+.drag{
+position:relative;
+cursor:pointer;
+z-index: 100;
+}
+</style>
+<script>
+/*
+var arg = new Array();
+var params = window.location.search;
+params = params.substr(1, params.length - 1);
+arg = params.split("=");
+var uoID = parseInt(arg[1]);
+*/
+
+function replacestr(string,suchen,ersetzen) 
+{
+ausgabe = "" + string;
+while (ausgabe.indexOf(suchen)>-1) {
+pos= ausgabe.indexOf(suchen);
+ausgabe = "" + (ausgabe.substring(0, pos) + ersetzen +
+ausgabe.substring((pos + suchen.length), ausgabe.length));
+}
+return ausgabe;
+}
+
+function add()
+{
+name="file://"+document.forms[0].bild.value;
+name=replacestr(name,'\\','/');
+opener.add_bild(name);
+window.close();
+}
+
+</script>
+</head>
+<body>
+<div style="position:absolute;left:20px; top:20px;">
+
+<form enctype="multipart/form-data">
+<p>W&auml;hle eine Bilddatei von deinem Rechner und doppelklicke auf den Pfadnamen:</p>
+<p style="font-size:smaller;color:#4D4D4D;">Funktioniert nicht in Browsern, die Skripten keinen Zugriff auf lokale Dateien erlauben.</p>
+<input type="file" name="bild" size="60" accept="image/*" ondblClick="javascript:add();">
+</form>
+
+
+</div>

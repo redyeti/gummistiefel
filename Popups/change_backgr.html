@@ -1,0 +1,92 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+
+
+body {
+  font-size:9pt;
+  color:#202020; 
+  font-family:sans-serif;  
+  padding:0px; 
+  background-color:#F1E9C1;
+  margin:0;
+  padding:0;
+  }
+
+a {
+  font-size:9pt;
+  color:#000252; 
+  font-family:sans-serif; 
+  text-decoration:none!important;
+  }
+  
+a:hover {
+  text-decoration:underline!important;
+  }
+  
+h1,h2,p {padding:0px 10px 0px 10px;}
+
+td {font-size:9pt;
+  color:#202020; }
+
+.drag{
+position:relative;
+cursor:pointer;
+z-index: 100;
+}
+
+</style>
+<script>
+
+
+function replacestr(string,suchen,ersetzen) 
+{
+ausgabe = "" + string;
+while (ausgabe.indexOf(suchen)>-1) {
+pos= ausgabe.indexOf(suchen);
+ausgabe = "" + (ausgabe.substring(0, pos) + ersetzen +
+ausgabe.substring((pos + suchen.length), ausgabe.length));
+}
+return ausgabe;
+}
+
+function change(datname)
+{
+opener.document.getElementById("Backgr").src=datname;
+window.close();
+}
+
+function add()
+{
+name="file://"+document.forms[0].bild.value;
+name=replacestr(name,'\\','/');
+change(name)
+}
+
+</script>
+<h2>Hintergrund ändern</h2>
+<p>Klicke auf einen der vorhandenen Hintergründe ...</p>
+<table border="0">
+<tr>
+<td>
+<a href="javascript: change('Bilder/Back.png')" style="margin:5px;"><img src="../Bilder/Back.png" width=160 height=120 border=0></a><br />
+</td>
+<td>
+<a href="javascript: change('Bilder/Mond.PNG')" style="margin:5px;"><img src="../Bilder/Mond.PNG" width=160 height=120 border=0></a><br />
+</td>
+</tr>
+<tr>
+<td>
+<a href="javascript: change('Bilder/BackWeiss.png')" style="margin:5px;"><img src="../Bilder/BackWeiss.png" width=160 height=120 border=0></a>
+</td>
+<td>
+
+<p>... oder wähle eine Bilddatei von deinem Rechner und doppelklicke auf den Pfadnamen.</p>
+<p style="font-size:smaller;color:#4D4D4D;">Letzteres funktioniert nicht in Browsern, die Skripten keinen Zugriff auf lokale Dateien erlauben.</p>
+</td>
+</tr>
+</table>
+<br>
+<form enctype="multipart/form-data">
+<input type="file" name="bild" style="width:350px; position:absolute; left:10px;" accept="image/*" ondblClick="javascript:add();">
+</form>
+

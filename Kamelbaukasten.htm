@@ -1,0 +1,383 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de" dir="ltr">
+
+<head>
+	<title>Kamelopedia Kamelbaukasten [V1.1]</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="StyleSheet" href="style.css">
+	<style type="text/css">
+	</style>
+</head>
+
+<body onLoad="javascript:splash()">
+	<script type="text/javascript" src="jquery-1.8.3.min.js"></script>
+	<script type="text/javascript">
+
+	//global vars
+	var uoID = 0;	//unique object ID
+	var tcol   = "black";
+	var tsize  = "12";
+	var tfont  = "Arial";
+	var tstyle = "normal";
+	var tweight= "normal";
+	var tdeco  = "none";
+	var tspace = "1";
+
+	/***********************************************
+	* Drag and Drop Script: (C) Dynamic Drive (http://www.dynamicdrive.com)
+	* This notice MUST stay intact for legal use
+	* Visit http://www.dynamicdrive.com/ for this script and 100s more.
+	***********************************************/
+	/* Z-Index-Modifikation von Kamel:Bert Randolf */
+	var zNow = 200;
+	var dragobject={
+		z: 0, x: 0, y: 0, offsetx : null, offsety : null, targetobj : null, dragapproved : 0,
+		initialize:function(){
+		document.onmousedown=this.drag
+		document.onmouseup=function(){this.dragapproved=0}
+		},
+		drag:function(e){
+			var evtobj=window.event? window.event : e
+			this.targetobj=window.event? event.srcElement : e.target
+			if (this.targetobj.className=="drag"){
+				this.dragapproved=1
+				if (isNaN(parseInt(this.targetobj.style.left))){this.targetobj.style.left=0}
+				if (isNaN(parseInt(this.targetobj.style.top))){this.targetobj.style.top=0}
+				this.offsetx=parseInt(this.targetobj.style.left)
+				this.offsety=parseInt(this.targetobj.style.top)
+				this.x=evtobj.clientX
+				this.y=evtobj.clientY
+				//this.targetobj.style.zIndex = ++zNow;
+				if (evtobj.preventDefault) evtobj.preventDefault()
+				document.onmousemove=dragobject.moveit
+			}
+		},
+		moveit:function(e){
+			var evtobj=window.event? window.event : e
+			if (this.dragapproved==1){
+				this.targetobj.style.left=this.offsetx+evtobj.clientX-this.x+"px"
+				this.targetobj.style.top=this.offsety+evtobj.clientY-this.y+"px"
+				return false
+			}
+		}
+	}
+	dragobject.initialize()
+	/* ENDE Drag and Drop Script ******************/
+
+	// Öffnet den Hintergrund-Wechsel-Dialog
+	function open_background_dialog(){
+		window.open("Popups/change_backgr.html", "Hintergrund_aendern","height=400, width=400, left=300, top=400");
+	}
+
+	// Öffnet den Autoren-Dialog
+	function open_autoren(){
+		window.open("Popups/Autoren.html", "Autoren","scrollbars=yes, height=400, width=600, left=400, top=300");
+	}
+
+	// Öffnet die Hilfe
+	function open_hilfe(){
+		window.open("Popups/Hilfe.html", "Hilfe","scrollbars=yes, height=400, width=420, left=400, top=300");
+	}
+
+	// Öffnet den Grafik-Dialog
+	function open_uploaddialog(){
+		window.open("Popups/upload.html", "Bild_einfuegen","height=120, width=560, left=300, top=400");
+	}
+
+	// Erzeugt ein neues Bildobjekt mit einzigartiger ID
+	function new_obj(){
+
+	}
+
+	// Fügt ein Objekt mit dem namen "objname" zum Bild hinzu
+	function add_obj(objname){
+		++uoID;
+		var ndiv = document.createElement('div');
+		ndiv.setAttribute('id','Nr_'+uoID);
+		ndiv.innerHTML="<img title=\"Nr_"+uoID+"\" ondblclick=\"this.style.zIndex = ++zNow\" class=\"drag\" style=\"position:absolute; top:0px; left:0px;\" src=\"Bilder/"+objname+"\" alt=\"\">";
+		$('#Zeichenbereich')[0].appendChild(ndiv);
+	}
+
+	// Fügt ein Bild mit dem Namen "name" hinzu
+	function add_bild(name){
+		++uoID;
+		var ndiv = document.createElement('div');
+		ndiv.setAttribute('id','Nr_'+uoID);
+		ndiv.innerHTML="<img title=\"Nr_"+uoID+"\" ondblclick=\"this.style.zIndex = ++zNow\" class=\"drag\" style=\"position:absolute; top:0px; left:0px;\" src=\""+name+"\" alt=\"\">";
+		$('#Zeichenbereich')[0].appendChild(ndiv);
+	}
+
+	function del_obj(objname){
+		if (uoID > 0){
+			$('#Zeichenbereich')[0].removeChild(document.getElementById("Nr_" +uoID));
+			--uoID;
+		}
+	}
+
+	// Leert den Bildschirm
+	function neu(){
+		var frage = confirm('Möchten Sie das aktuelle Bild wirklich löschen?');
+		if (frage==true){
+			$('#Zeichenbereich')[0].innerHTML="<img style=\"position:absolute;z-index:61;\" src=\"Bilder/Back.png\" id=\"Backgr\" alt=\"\" title=\"\" border=\"0\" height=\"600\" width=\"800\">";
+			awaySplash();
+			uoID = 0;
+		} 
+		else {
+			return;
+		}
+	}
+
+	// Entfernt den Splash
+	function awaySplash(){
+		$('#splsh')[0].innerHTML="";
+	}
+
+	function splash(){
+		window.setTimeout("awaySplash()",4000);
+	}
+
+	function enter_txt(){
+		var ttext=$('#test')[0].value;
+		if(ttext!=""){
+			++uoID;
+			var ndiv = document.createElement('div');
+			ndiv.setAttribute('id','Nr_'+uoID);
+			ndiv.innerHTML="<div title=\"Nr_"+uoID+"\" class=\"drag\" ondblclick=\"this.style.zIndex = ++zNow\" style=\"position:absolute; color:"+tcol+"; font-family:"+tfont+"; font-size:"+tsize+"px; font-style:"+tstyle+"; font-weight:"+tweight+"; text-decoration:"+tdeco+"; letter-spacing:"+tspace+"px; top:0px; left:0px; height:60px; padding:20px; margin:20px; width:800px;\">"+ttext+"</div>";
+			$('#Zeichenbereich')[0].appendChild(ndiv);
+		}
+	}
+	</script>
+
+
+	<img src="Bilder/logo.gif" alt="logo.gif, 2 kB" title="logo" border="0" height="34" width="177"/>
+	<div style="position: absolute; top:10px; left: 0px; left:180px;">
+		<table style="border: 2px black solid; white-space: nowrap;"> 
+			<tr>
+				<td style="border-right: 1px black solid;">
+					<a class="button" href="#" onclick="neu()">Neu</a>
+					<a class="button" href="#" onclick="open_background_dialog()">Hintergrund ändern</a>
+					<br/>
+					<a class="button" href="#" onclick="open_uploaddialog()">Bild einfügen</a>
+					<a class="button" href="#" onclick="del_obj()">letztes Teil löschen</a>
+				</td>
+				<td style="border-right: 1px black solid;">
+					<select size="1" id="sel2" onchange="tfont = $('#sel2')[0].options[this.selectedIndex].value;
+					$('#test')[0].style.fontFamily = tfont; ">
+					   <option value="Arial">Arial</option>
+					   <option value="Arial Black">Arial Black</option>
+					   <option value="Century Schoolbook">Century Schoolbook</option>
+					   <option value="Comic Sans MS">Comic Sans MS</option>
+					   <option value="Garamond">Garamond</option>
+					   <option value="Helvetica">Helvetica</option>
+					   <option value="Impact">Impact</option>
+					   <option value="Lucida Console">Lucida Console</option>
+					   <option value="Rockwell">Rockwell</option>
+					   <option value="Times New Roman">Times New Roman</option>
+					   <option value="Verdana">Verdana</option>
+					   <option value="serif">generic:serif</option>
+					   <option value="sans-serif">generic:sans-serif</option>
+					   <option value="monospace">generic:monospace</option>
+					   <option value="fantasy">generic:fantasy</option>
+					   <option value="cursive">generic:cursive</option>
+					   </select>
+					<select size="1" id="sel3" onchange="tstyle = $('#sel3')[0].options[this.selectedIndex].value;
+					$('#test')[0].style.fontStyle = tstyle; ">
+					   <option value="normal">normal</option>
+					   <option value="italic">kursiv</option>
+					   <option value="oblique">schräg</option>
+					   </select>
+					<select size="1" id="sel4" onchange="tweight = $('#sel4')[0].options[this.selectedIndex].value;
+					$('#test')[0].style.fontWeight = tweight; ">
+					   <option value="normal">schlank</option>
+					   <option value="bold">fett</option>
+					   <option value="bolder">oberfett</option>
+					   <option value="lighter">mager</option>
+					   <option value="100">100</option>
+					   <option value="200">200</option>
+					   <option value="300">300</option>
+					   <option value="400">400</option>
+					   <option value="500">500</option>
+					   <option value="600">600</option>
+					   <option value="700">700</option>
+					   <option value="800">800</option>
+					   <option value="900">900</option>
+					   </select> | 
+					<select size="1" id="sel5" onchange="tdeco = $('#sel5')[0].options[this.selectedIndex].value;
+					$('#test')[0].style.textDecoration = tdeco; ">
+					   <option value="none">kein Strich</option>
+					   <option value="underline">unterstrichen</option>
+					   <option value="line-through">durchgestrichen</option>
+					   <option value="overline">überstrichen</option>
+					   <option value="blink">blinkend</option>
+					   </select>
+					<input type="text" id="sz" value="1" size="2" maxlength="2" onchange="tspace = this.value;">px&nbsp;
+					<br/>
+					<input type="text" id="sz" value="12" size="3" maxlength="3" onchange="tsize = this.value;">px
+					<select size="1" id="sel1" onchange="tcol = $('#sel1')[0].options[this.selectedIndex].value;
+					$('#test')[0].style.color = tcol;">
+					   <option value="black">Schwarz</option>
+					   <option value="navy">Dunkelblau</option>
+					   <option value="blue">Blau</option>
+					   <option value="aqua">Hellblau</option>
+					   <option value="purple">Violett</option>
+					   <option value="maroon">Braun</option>
+					   <option value="red">Rot</option>
+					   <option value="fuchsia">Pink</option>
+					   <option value="green">Grün</option>
+					   <option value="lime">Leuchtgrün</option>
+					   <option value="teal">Seegrün</option>
+					   <option value="olive">Dunkelgelb</option>
+					   <option value="yellow">Gelb</option>
+					   <option value="gray">Grau</option>
+					   <option value="silver">Silber</option>
+					   <option value="white">Weiß</option>
+					   </select>
+					<input type="text" id="test" value="Text" style="width:20en;">
+					<a class="button" href="#" onclick="enter_txt()">Text einfügen</a>
+				</td>
+				<td>
+					<a class="button" href="#" onclick="open_hilfe()">Hilfe</a>
+				</td>
+			</tr>
+		</table>
+
+		<div id="splsh" style="position:absolute;top:80px;left:20px;z-index:62;" >
+		<img src="Bilder/Copyright.gif" style="z-index:62; position:absolute; top:230px;left:30px;"/>
+		</div>
+
+		<div id="Zeichenbereich" style="position: relative;" >
+		<img style="margin-top: 10px;" src="Bilder/Back.png" id="Backgr" alt="" title="" border="0" height="600" width="800"/>
+		</div>
+
+		<div style="Position:absolute; top:675px;left:50px; width:700px;">
+			<center>
+				Inhalt ist verfübar unter der
+				<a href="gfdl.txt" target="new">"GNU Free Documentation License"</a>&nbsp;▪&nbsp;
+				<a href="#" onclick="open_autoren()">Autoren & History</a><br />
+				Kamelopedia:
+				<a href="http://kamelopedia.mormo.org/index.php/Hauptseite" target="_blank">Hauptseite</a>
+				&nbsp;▪&nbsp;
+				<a href="http://kamelopedia.mormo.org/index.php/Gummistiefel" target="_blank">Gummistiefel</a>
+				&nbsp;▪&nbsp;
+				<a href="http://kamelopedia.mormo.org/index.php/Gummistiefel/Galerie" target="_blank">Galerie</a>
+				<br />
+				<p style="font-size:smaller;color:#4D4D4D;">Kopieren, Verbreiten und/oder Verändern ist unter den Bedingungen der GNU Free Documentation License, Version 1.2 oder einer späteren Version, veröffentlicht von der Free Software Foundation, erlaubt. Es gibt keine unveränderlichen Abschnitte, keinen vorderen Umschlagtext und keinen hinteren Umschlagtext. Eine Kopie des Lizenztextes ist unter dem Titel GNU Free Documentation License enthalten.</p>
+			</center>
+		</div>
+	</div>
+
+
+
+	<div style="Position:absolute; top:37px;left:10px;width:160px; height:628px; overflow:auto; border:1px solid #000; background-color:#F0F0F0;color:grey;font-size:0.85em;">
+	    <center>
+	    <a href="#" onclick="add_obj('GS_gruen1.gif');"><img src="Bilder/GS_gruen1.gif" height=50 border=0/></a>
+	    <a href="#" onclick="add_obj('Bastelpyramidegr.gif');"><img src="Bilder/Bastelpyramidegr.gif" width="60" border=0/></a>
+	    <a href="#" onclick="add_obj('GS_BritishLemur.gif');"><img src="Bilder/GS_BritishLemur.gif" height="45" border=0 /></a> 
+	    <a href="#" onclick="add_obj('GS_BritishLemurd.gif');"><img src="Bilder/GS_BritishLemurd.gif" height="45" border=0/></a><br />
+	    
+	    <a href="#" onclick="add_obj('Bastelpyramidemed.gif');"><img src="Bilder/Bastelpyramidemed.gif" width="40" border=0 /></a>
+	    <a href="#" onclick="add_obj('Bastelpyramidekl.gif');"><img src="Bilder/Bastelpyramidekl.gif" width="20" border=0 /></a>
+	    <a href="#" onclick="add_obj('GS_braun1.gif');"><img src="Bilder/GS_braun1.gif" border=0 /></a>
+	    <a href="#" onclick="add_obj('GS_braun2.gif');"><img src="Bilder/GS_braun2.gif" border=0 /></a><br />
+	    
+	    <a href="#" onclick="add_obj('Moepp.gif');"><img src="Bilder/Moepp.gif" width="40" border=0 /></a>
+	    <a href="#" onclick="add_obj('GSRegenkrone.gif');"><img src="Bilder/GSRegenkrone.gif" width="35" border=0 /></a>
+	    <a href="#" onclick="add_obj('GSRegenkroned.gif');"><img src="Bilder/GSRegenkroned.gif" width="35" border=0 /></a>
+	    <a href="#" onclick="add_obj('Gkam.gif');"><img src="Bilder/Gkam.gif" border=0 /></a><br />
+	    
+	    <a href="#" onclick="add_obj('GS_gruen2b.gif');"><img src="Bilder/GS_gruen2b.gif" width="28" border=0 /></a>
+	    <a href="#" onclick="add_obj('GS_gruen2.gif');"><img src="Bilder/GS_gruen2.gif" width="28" border=0 /></a>
+	    <a href="#" onclick="add_obj('Kam_Hut_Regen.gif');"><img src="Bilder/Kam_Hut_Regen.gif" width="28" border=0 /></a>
+	    <a href="#" onclick="add_obj('Kam_Hut_Regen2.gif');"><img src="Bilder/Kam_Hut_Regen2.gif" width="28" border=0 /></a><br />
+	   
+
+	    <a href="#" onclick="add_obj('GS_Tuempel.gif');"><img src="Bilder/GS_Tuempel.gif" width=100 border=0 /></a>
+	    <a href="#" onclick="add_obj('GS_frage.gif');"><img src="Bilder/GS_frage.gif" height=20 border=0 /></a><br />
+	    
+	    <a href="#" onclick="add_obj('GS_KleinesKamel.gif');"><img src="Bilder/GS_KleinesKamel.gif" width="34" border=0 /></a>
+	    <a href="#" onclick="add_obj('GS_Frisur1.gif');"><img src="Bilder/GS_Frisur1.gif" height=40 border=0 /></a>
+	    <a href="#" onclick="add_obj('GS_Frisur1d.gif');"><img src="Bilder/GS_Frisur1d.gif" height=40 border=0 /></a>
+	    <a href="#" onclick="add_obj('GS_KleinesKameld.gif');"><img src="Bilder/GS_KleinesKameld.gif" width="34" border=0 /></a><br />
+	    
+	    <a href="#" onclick="add_obj('Kam_Kopf_Orig1.gif');"><img src="Bilder/Kam_Kopf_Orig1.gif" width="30" border=0 /></a>
+	    <a href="#" onclick="add_obj('Kam_Kopf_Orig1b.gif');"><img src="Bilder/Kam_Kopf_Orig1b.gif" width="30" border=0 /></a>
+	    <a href="#" onclick="add_obj('GS_Smile.gif');"><img src="Bilder/GS_Smile.gif" width=34 border=0 /></a>
+	    <a href="#" onclick="add_obj('Smile.gif');"><img src="Bilder/Smile.gif" width=34 border=0 /></a><br />
+	    
+	    <a href="#" onclick="add_obj('Kam_Schwanz3.gif');"><img src="Bilder/Kam_Schwanz3.gif" width=30 border=0 /></a>
+	    <a href="#" onclick="add_obj('Kam_Schwanz3d.gif');"><img src="Bilder/Kam_Schwanz3d.gif" width=30 border=0 /></a>
+	    <a href="#" onclick="add_obj('Kopie_von_Kam_Kopf_Smily.gif');"><img src="Bilder/Kopie_von_Kam_Kopf_Smily.gif" width=34 border=0 /></a>
+	    <a href="#" onclick="add_obj('Kopie_von_Kam_Kopf_Smilyd.gif');"><img src="Bilder/Kopie_von_Kam_Kopf_Smilyd.gif" width=34 border=0 /></a><br />
+	 
+	    
+	    <a href="#" onclick="add_obj('GS_FnordCompact.gif');"><img src="Bilder/GS_FnordCompact.gif" width=70 border=0 /></a> 
+	    <a href="#" onclick="add_obj('GS_FnordCompactd.gif');"><img src="Bilder/GS_FnordCompactd.gif" width=70 border=0 /></a><br />
+	    
+	    <a href="#" onclick="add_obj('GS_weisses_objekt.gif');"><img src="Bilder/GS_weisses_objekt.gif" border=0 /></a>
+	    <a href="#" onclick="add_obj('GS_Kugeldings.gif');"><img src="Bilder/GS_Kugeldings.gif" border=0 /></a>
+	    <a href="#" onclick="add_obj('GS_Kugeldings2.gif');"><img src="Bilder/GS_Kugeldings2.gif" border=0 /></a>
+	    <a href="#" onclick="add_obj('GS_Rad.gif');"><img src="Bilder/GS_Rad.gif" width=20 border=0 /></a>
+	    <a href="#" onclick="add_obj('GS_Rad2.gif');"><img src="Bilder/GS_Rad2.gif" width=30 border=0 /></a><br />
+	    
+	 
+
+
+	     <a href="#" onclick="add_obj('GS_Zipfel1.gif');"><img src="Bilder/GS_Zipfel1.gif" width=25 border=0 /></a>
+	     <a href="#" onclick="add_obj('GS_Blase.gif');"><img src="Bilder/GS_Blase.gif" width=80 border=0 /></a>
+	     <a href="#" onclick="add_obj('GS_Zipfe2.gif');"><img src="Bilder/GS_Zipfe2.gif" width=25 border=0 /></a><br />
+	     
+	 
+	    
+	    <a href="#" onclick="add_obj('Kam_Beid_hinten1.gif');"><img src="Bilder/Kam_Beid_hinten1.gif" height=40 border=0 /></a> 
+	    <a href="#" onclick="add_obj('Kam_Bein_vorne1.gif');"><img src="Bilder/Kam_Bein_vorne1.gif" height=40 border=0 /></a> 
+	    <a href="#" onclick="add_obj('Kam_Gummistiefel_hinten1.gif');"><img src="Bilder/Kam_Gummistiefel_hinten1.gif" height=40 border=0 /></a> 
+	    <a href="#" onclick="add_obj('Kam_Gummistiefel_vorne1.gif');"><img src="Bilder/Kam_Gummistiefel_vorne1.gif" height=40 border=0 /></a> 
+	    <a href="#" onclick="add_obj('Kam_Beid_hinten1d.gif');"><img src="Bilder/Kam_Beid_hinten1d.gif" height=40 border=0 /></a> 
+	    <a href="#" onclick="add_obj('Kam_Bein_vorne1d.gif');"><img src="Bilder/Kam_Bein_vorne1d.gif" height=40 border=0 /></a> <br />
+	    
+	    <a href="#" onclick="add_obj('Kam_Gummistiefel_hinten1d.gif');"><img src="Bilder/Kam_Gummistiefel_hinten1d.gif" height=40 border=0 /></a> 
+	    <a href="#" onclick="add_obj('Kam_Gummistiefel_vorne1d.gif');"><img src="Bilder/Kam_Gummistiefel_vorne1d.gif" height=40 border=0 /></a>
+	    <a href="#" onclick="add_obj('Kam_Schwanz1.gif');"><img src="Bilder/Kam_Schwanz1.gif" height=40 border=0 /></a> 
+	    <a href="#" onclick="add_obj('Kam_Schwanz1d.gif');"><img src="Bilder/Kam_Schwanz1d.gif" height=40 border=0 /></a>
+	    <a href="#" onclick="add_obj('GS_Ding01d.gif');"><img src="Bilder/GS_Ding01d.gif" width=45 border=0 /></a><br />
+	   
+
+	    <a href="#" onclick="add_obj('Kam_Hoeccker_05.gif');"><img src="Bilder/Kam_Hoeccker_05.gif" width=45 border=0 /></a>
+	    <a href="#" onclick="add_obj('Kam_Hoeccker_07.gif');"><img src="Bilder/Kam_Hoeccker_07.gif" width=45 border=0 /></a>
+	    <a href="#" onclick="add_obj('Kam_Hoeccker_05d.gif');"><img src="Bilder/Kam_Hoeccker_05d.gif" width=45 border=0 /></a><br />
+	    
+	    <a href="#" onclick="add_obj('Kam_Hoeccker_07d.gif');"><img src="Bilder/Kam_Hoeccker_07d.gif" width=45 border=0 /></a>
+	    <a href="#" onclick="add_obj('GS_Ding01.gif');"><img src="Bilder/GS_Ding01.gif" width=45 border=0 /></a>
+	    <a href="#" onclick="add_obj('Kam_Hoeccker_01.gif');"><img src="Bilder/Kam_Hoeccker_01.gif" width=45 border=0 /></a><br />
+	    
+	    <a href="#" onclick="add_obj('Kam_Hoeccker_010.gif');"><img src="Bilder/Kam_Hoeccker_010.gif" width=45 border=0 /></a>
+	    <a href="#" onclick="add_obj('Kam_Hoeccker_02.gif');"><img src="Bilder/Kam_Hoeccker_02.gif" width=45 border=0 /></a>
+	    <a href="#" onclick="add_obj('Kam_Hoeccker_03.gif');"><img src="Bilder/Kam_Hoeccker_03.gif" width=45 border=0 /></a><br />
+	    
+	    <a href="#" onclick="add_obj('Kam_Hoeccker_04.gif');"><img src="Bilder/Kam_Hoeccker_04.gif" width=45 border=0 /></a>
+	    <a href="#" onclick="add_obj('Kam_Hoeccker_06.gif');"><img src="Bilder/Kam_Hoeccker_06.gif" width=45 border=0 /></a>
+	    <a href="#" onclick="add_obj('Kam_Hoeccker_08.gif');"><img src="Bilder/Kam_Hoeccker_08.gif" width=45 border=0 /></a><br />
+	    
+	    <a href="#" onclick="add_obj('Kam_Hoeccker_09.gif');"><img src="Bilder/Kam_Hoeccker_09.gif" width=45 border=0 /></a> 
+	    <a href="#" onclick="add_obj('Kam_Hoeccker_010d.gif');"><img src="Bilder/Kam_Hoeccker_010d.gif" width=45 border=0 /></a>
+	    <a href="#" onclick="add_obj('Kam_Hoeccker_01d.gif');"><img src="Bilder/Kam_Hoeccker_01d.gif" width=45 border=0 /></a><br />
+	    
+	    <a href="#" onclick="add_obj('Kam_Hoeccker_02d.gif');"><img src="Bilder/Kam_Hoeccker_02d.gif" width=45 border=0 /></a>
+	    <a href="#" onclick="add_obj('Kam_Hoeccker_03d.gif');"><img src="Bilder/Kam_Hoeccker_03d.gif" width=45 border=0 /></a>
+	    <a href="#" onclick="add_obj('Kam_Hoeccker_04d.gif');"><img src="Bilder/Kam_Hoeccker_04d.gif" width=45 border=0 /></a><br />
+
+	    <a href="#" onclick="add_obj('Kam_Hoeccker_06d.gif');"><img src="Bilder/Kam_Hoeccker_06d.gif" width=45 border=0 /></a>
+	    <a href="#" onclick="add_obj('Kam_Hoeccker_08d.gif');"><img src="Bilder/Kam_Hoeccker_08d.gif" width=45 border=0 /></a>
+	    <a href="#" onclick="add_obj('Kam_Hoeccker_09d.gif');"><img src="Bilder/Kam_Hoeccker_09d.gif" width=45 border=0 /></a><br />  
+	    
+	    <a href="#" onclick="add_obj('Kam_Rumpf_Hals1.gif');"><img src="Bilder/Kam_Rumpf_Hals1.gif" width=55 border=0 /></a>
+	    <a href="#" onclick="add_obj('Kam_Rumpf_Regen.gif');"><img src="Bilder/Kam_Rumpf_Regen.gif" width=55 border=0 /></a><br />
+	    
+	    <a href="#" onclick="add_obj('Kam_Rumpf_Hals1d.gif');"><img src="Bilder/Kam_Rumpf_Hals1d.gif" width=55 border=0 /></a>
+	    <a href="#" onclick="add_obj('Kam_Rumpf_Regend.gif');"><img src="Bilder/Kam_Rumpf_Regend.gif" width=55 border=0 /></a><br />
+	    </center>
+	</div>
+
+
+</body>
+</html>

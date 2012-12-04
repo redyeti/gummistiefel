@@ -115,6 +115,13 @@
 		}
 	}
 
+	function clone_selection(){
+		var $clones = selection.children().clone();
+		$clones.css("border","none");
+		$clones.css("margin","0px");
+		create($clones);
+	}
+
 	// Leert den Bildschirm
 	function neu(){
 		var frage = confirm('Möchten Sie das aktuelle Bild wirklich löschen?');
@@ -360,7 +367,8 @@
 			<div><label for="sel_zindex">Z:</label> <input id="sel_zindex" type="text"></div>
 			<div><label for="sel_alpha">A:</label> <input id="sel_alpha" type="text">%</div>
 			<input style="width:100%; margin-top: 10px;" type="submit" value="Setzen"/>
-			<input style="width:100%; margin-top: 10px;" type="button" value="Löschen" onclick="del_ask(selection);"/>
+			<input style="width:100%; margin-top: 10px;" type="button" value="Duplizieren" onclick="clone_selection();"/>
+			<input style="width:100%;" type="button" value="Löschen" onclick="del_ask(selection);"/>
 			<div style="margin-top: 10px; font-size: 80%;">
 				<input type="checkbox" id="showselbox" value="off" onchange="update_selection_box();" />
 				<label for="showselbox">Box zeigen</label>

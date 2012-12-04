@@ -38,3 +38,22 @@ input, select {
 	border: 1px black solid;
 	font-size:10pt;
 }
+
+.infobox {
+	position: absolute;
+	top: 10px;
+	left: 810px;
+	border: 2px black solid;
+}
+
+.infobox input {
+	vertical-align: middle;
+}
+
+.infobox div {
+	white-space: nowrap;
+}
+
+.infobox input {
+	width: 3em;
+}

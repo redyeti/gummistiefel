@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de" dir="ltr">
 
 <head>
-	<title>Kamelopedia Kamelbaukasten [V1.1]</title>
+	<title>Kamelopedia Kamelbaukasten [V1.2]</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="StyleSheet" href="style.css">
 	<style type="text/css">
@@ -11,10 +11,15 @@
 
 <body onLoad="javascript:splash()">
 	<script type="text/javascript" src="jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="dragdrop.js"></script>
 	<script type="text/javascript">
 
 	//global vars
-	var uoID = 0;	//unique object ID
+
+	var uoID = 0; //unique object ID
+	var zNow = 200; // z-index modificator
+
+	// text properties
 	var tcol   = "black";
 	var tsize  = "12";
 	var tfont  = "Arial";
@@ -23,46 +28,15 @@
 	var tdeco  = "none";
 	var tspace = "1";
 
-	/***********************************************
-	* Drag and Drop Script: (C) Dynamic Drive (http://www.dynamicdrive.com)
-	* This notice MUST stay intact for legal use
-	* Visit http://www.dynamicdrive.com/ for this script and 100s more.
-	***********************************************/
-	/* Z-Index-Modifikation von Kamel:Bert Randolf */
-	var zNow = 200;
-	var dragobject={
-		z: 0, x: 0, y: 0, offsetx : null, offsety : null, targetobj : null, dragapproved : 0,
-		initialize:function(){
-		document.onmousedown=this.drag
-		document.onmouseup=function(){this.dragapproved=0}
-		},
-		drag:function(e){
-			var evtobj=window.event? window.event : e
-			this.targetobj=window.event? event.srcElement : e.target
-			if (this.targetobj.className=="drag"){
-				this.dragapproved=1
-				if (isNaN(parseInt(this.targetobj.style.left))){this.targetobj.style.left=0}
-				if (isNaN(parseInt(this.targetobj.style.top))){this.targetobj.style.top=0}
-				this.offsetx=parseInt(this.targetobj.style.left)
-				this.offsety=parseInt(this.targetobj.style.top)
-				this.x=evtobj.clientX
-				this.y=evtobj.clientY
-				//this.targetobj.style.zIndex = ++zNow;
-				if (evtobj.preventDefault) evtobj.preventDefault()
-				document.onmousemove=dragobject.moveit
-			}
-		},
-		moveit:function(e){
-			var evtobj=window.event? window.event : e
-			if (this.dragapproved==1){
-				this.targetobj.style.left=this.offsetx+evtobj.clientX-this.x+"px"
-				this.targetobj.style.top=this.offsety+evtobj.clientY-this.y+"px"
-				return false
-			}
-		}
-	}
-	dragobject.initialize()
-	/* ENDE Drag and Drop Script ******************/
+	// default Zeichenbereich (wird nach dem Erstellen der Seite gefüllt)
+	var defaultZArea = null;
+
+	// current selection
+	var selection = $([]);
+
+	// prefixes for browser dependend css styles
+	var browserprefixes = ["", "-o-","-moz-","-webkit-","-ms-"];
+
 
 	// Öffnet den Hintergrund-Wechsel-Dialog
 	function open_background_dialog(){
@@ -84,33 +58,60 @@
 		window.open("Popups/upload.html", "Bild_einfuegen","height=120, width=560, left=300, top=400");
 	}
 
-	// Erzeugt ein neues Bildobjekt mit einzigartiger ID
-	function new_obj(){
+	// Hilfsfunktion für die Erstellung von neuen Objekten 
+	// Kümmert sich um die Id und um alles, was alle Zeichenobjekte gemeinsam haben
+	function create($inner){
+		++uoID;
+		var name = 'Nr_'+uoID;
 
+		var $ndiv = $('<div/>');
+		$ndiv.attr('id',name);
+
+		$inner.dblclick(function(){
+			this.style.zIndex = ++zNow;
+			mk_infobox($(this).parent());
+		});
+
+		$inner.click(function(){
+			mk_infobox($(this).parent());
+		});
+
+		$inner.attr('class', 'drag');
+		$inner.css("position","absolute");
+		$inner.css("top","20px");
+		$inner.css("left","20px");
+
+		$ndiv.append($inner);
+		$('#Zeichenbereich').append($ndiv)
 	}
 
-	// Fügt ein Objekt mit dem namen "objname" zum Bild hinzu
+	// Fügt ein Bild von irgendwo mit den Namen "objname" zum Bild hinzu
+	function add_bild(objname){
+
+		var $img = $("<img alt='' title='' />");
+		$img.attr('src', objname);
+
+		create($img);
+	}
+
+	// Fügt ein Objekt aus dem Bilderordner mit dem namen "objname" zum Bild hinzu
 	function add_obj(objname){
-		++uoID;
-		var ndiv = document.createElement('div');
-		ndiv.setAttribute('id','Nr_'+uoID);
-		ndiv.innerHTML="<img title=\"Nr_"+uoID+"\" ondblclick=\"this.style.zIndex = ++zNow\" class=\"drag\" style=\"position:absolute; top:0px; left:0px;\" src=\"Bilder/"+objname+"\" alt=\"\">";
-		$('#Zeichenbereich')[0].appendChild(ndiv);
-	}
-
-	// Fügt ein Bild mit dem Namen "name" hinzu
-	function add_bild(name){
-		++uoID;
-		var ndiv = document.createElement('div');
-		ndiv.setAttribute('id','Nr_'+uoID);
-		ndiv.innerHTML="<img title=\"Nr_"+uoID+"\" ondblclick=\"this.style.zIndex = ++zNow\" class=\"drag\" style=\"position:absolute; top:0px; left:0px;\" src=\""+name+"\" alt=\"\">";
-		$('#Zeichenbereich')[0].appendChild(ndiv);
+		return add_bild("Bilder/"+objname);
 	}
 
 	function del_obj(objname){
 		if (uoID > 0){
 			$('#Zeichenbereich')[0].removeChild(document.getElementById("Nr_" +uoID));
 			--uoID;
+			hide_infobox();
+		}
+	}
+
+	function del_ask($obj){
+		var frage = confirm("Objekt wirklich löschen?");
+		if (frage){
+			$($obj).remove();
+			hide_infobox();
 		}
 	}
 
@@ -118,13 +119,101 @@
 	function neu(){
 		var frage = confirm('Möchten Sie das aktuelle Bild wirklich löschen?');
 		if (frage==true){
-			$('#Zeichenbereich')[0].innerHTML="<img style=\"position:absolute;z-index:61;\" src=\"Bilder/Back.png\" id=\"Backgr\" alt=\"\" title=\"\" border=\"0\" height=\"600\" width=\"800\">";
+			$("#Zeichenbereich").html(defaultZArea);
 			awaySplash();
 			uoID = 0;
 		} 
-		else {
-			return;
+	}
+
+
+	function mk_infobox($el){
+		update_selection_box(true);
+		$("#infobox").show();
+		selection = $el;
+		update_selection_box();
+		
+		var $img = $el.children();
+		
+		// update box title
+		$("#cselid").text($el.attr("id"));
+
+		// get width and height 
+
+		if ($el.data("width") == null) {
+			$el.data("width",$img.width());
 		}
+		
+		if ($el.data("height") == null) {
+			$el.data("height",$img.height());	
+		}
+		
+		$("#sel_width").val(parseInt($img.width()/$el.data("width")*100));
+		$("#sel_height").val(parseInt($img.height()/$el.data("height")*100));
+
+		// get rotation
+
+		if ($el.data("rotation") == null) {
+			$el.data("rotation", 0) 
+		}
+
+		$("#sel_rotation").val(parseInt($el.data("rotation")));
+
+		// get alpha
+
+		if ($el.data("alpha") == null) {
+			$el.data("alpha", 100) 
+		}
+
+		$("#sel_alpha").val(parseInt($el.data("alpha")));
+		
+		// get z-index
+
+		$("#sel_zindex").val($img.css("z-index"));
+	}
+
+	function hide_infobox(){
+		$("#infobox").hide();
+		update_selection_box();
+	}
+
+	function update_selection_box (unmask){
+		if (!unmask && $('#showselbox').attr('checked') && $("#infobox").is(":visible")) {
+			selection.children().css("border","1px red dashed");
+			selection.children().css("margin","-1px");
+		} else {
+			selection.children().css("border","none");
+			selection.children().css("margin","0px");
+		}
+	}
+
+	function update_selection() {
+		$img = selection.find("img");
+
+		// set width and height
+		$img.width(selection.data("width")*parseInt($("#sel_width").val())/100);
+		$img.height(selection.data("height")*parseInt($("#sel_height").val())/100);
+		
+		// set rotation
+		var rotation = parseInt($("#sel_rotation").val());
+		selection.data("rotation", rotation);
+
+		$.each(browserprefixes, function (num, prefix) {
+			$img.css(prefix+"transform","rotate("+rotation+"deg)");
+		});
+
+		// set alpha
+		selection.data("alpha", parseInt($("#sel_alpha").val()));
+
+		$.each(browserprefixes, function (num, prefix) {
+			$img.css(prefix+"opacity",parseInt($("#sel_alpha").val())/100);
+		});
+
+		// set z-index
+		$img.css("z-index", $("#sel_zindex").val());
+
+		// update infobox
+		mk_infobox(selection);
+		return false;
 	}
 
 	// Entfernt den Splash
@@ -136,14 +225,20 @@
 		window.setTimeout("awaySplash()",4000);
 	}
 
+	// erstellt den Text aus der Infobox
 	function enter_txt(){
-		var ttext=$('#test')[0].value;
-		if(ttext!=""){
-			++uoID;
-			var ndiv = document.createElement('div');
-			ndiv.setAttribute('id','Nr_'+uoID);
-			ndiv.innerHTML="<div title=\"Nr_"+uoID+"\" class=\"drag\" ondblclick=\"this.style.zIndex = ++zNow\" style=\"position:absolute; color:"+tcol+"; font-family:"+tfont+"; font-size:"+tsize+"px; font-style:"+tstyle+"; font-weight:"+tweight+"; text-decoration:"+tdeco+"; letter-spacing:"+tspace+"px; top:0px; left:0px; height:60px; padding:20px; margin:20px; width:800px;\">"+ttext+"</div>";
-			$('#Zeichenbereich')[0].appendChild(ndiv);
+		var ttext=$.trim($('#test').val());
+		if(ttext != ""){
+			var $text = $("<div style='height:60px; padding:20px; margin:20px; max-width:800px;'/>");
+			$text.css("color", tcol);
+			$text.css("font-family", tfont);
+			$text.css("font-size", tsize+"px");
+			$text.css("font-style", tstyle);
+			$text.css("font-weight", tweight);
+			$text.css("text-decoration", tdeco);
+			$text.css("letter-spacing", tspace+"px");
+			$text.text(ttext);
+			create($text);
 		}
 	}
 	</script>
@@ -241,15 +336,39 @@
 			</tr>
 		</table>
 
-		<div id="splsh" style="position:absolute;top:80px;left:20px;z-index:62;" >
+	<div style="position:relative;">
+		<div id="splsh" style="position:absolute;top:10px;left:20px;z-index:62;" >
 		<img src="Bilder/Copyright.gif" style="z-index:62; position:absolute; top:230px;left:30px;"/>
 		</div>
 
-		<div id="Zeichenbereich" style="position: relative;" >
-		<img style="margin-top: 10px;" src="Bilder/Back.png" id="Backgr" alt="" title="" border="0" height="600" width="800"/>
+		<div style="position: relative; overflow: hidden; width: 800px;" >
+			<div id="Zeichenbereich">
+				<img style="margin-top: 10px;" src="Bilder/Back.png" id="Backgr" alt="" title="" border="0" height="600" width="800"/>
+			</div>
 		</div>
 
-		<div style="Position:absolute; top:675px;left:50px; width:700px;">
+		<script type="text/javascript">
+			defaultZArea = $("#Zeichenbereich").html();
+		</script>
+
+		<div id="infobox" class="infobox" style="display:none;">
+			<form name="sel" action="somewherelse" onsubmit="return update_selection()">
+			<div><b>Info: <span id="cselid">-</span></b></div>
+			<div><label for="sel_width">W:</label> <input name="w" id="sel_width" type="text">%</div>
+			<div><label for="sel_height">H:</label> <input id="sel_height" type="text">%</div>
+			<div><label for="sel_rotation">R:</label> <input id="sel_rotation" type="text">°</div>
+			<div><label for="sel_zindex">Z:</label> <input id="sel_zindex" type="text"></div>
+			<div><label for="sel_alpha">A:</label> <input id="sel_alpha" type="text">%</div>
+			<input style="width:100%; margin-top: 10px;" type="submit" value="Setzen"/>
+			<input style="width:100%; margin-top: 10px;" type="button" value="Löschen" onclick="del_ask(selection);"/>
+			<div style="margin-top: 10px; font-size: 80%;">
+				<input type="checkbox" id="showselbox" value="off" onchange="update_selection_box();" />
+				<label for="showselbox">Box zeigen</label>
+			</div>
+			</form>
+		</div>
+
+		<div style="Position:absolute; top:625px;left:50px; width:700px;">
 			<center>
 				Inhalt ist verfübar unter der
 				<a href="gfdl.txt" target="new">"GNU Free Documentation License"</a>&nbsp;▪&nbsp;
@@ -264,6 +383,8 @@
 				<p style="font-size:smaller;color:#4D4D4D;">Kopieren, Verbreiten und/oder Verändern ist unter den Bedingungen der GNU Free Documentation License, Version 1.2 oder einer späteren Version, veröffentlicht von der Free Software Foundation, erlaubt. Es gibt keine unveränderlichen Abschnitte, keinen vorderen Umschlagtext und keinen hinteren Umschlagtext. Eine Kopie des Lizenztextes ist unter dem Titel GNU Free Documentation License enthalten.</p>
 			</center>
 		</div>
+
+	</div>
 	</div>
 
 

@@ -1,0 +1,128 @@
+.clear {
+	clear: both;
+}
+
+.guiBox {
+	border: 2px black solid;
+	margin: 10px;
+	padding: 5px 7px;
+}
+
+.buttons div {
+	float: left;
+}
+
+.buttons div, .button {
+	border-left: 2px white solid;
+	border-top: 2px white solid;
+	border-right: 2px white solid;
+	border-bottom: 2px white solid;
+	padding: 1px 3px;
+	margin: 2px 2px;
+	cursor: pointer;
+}
+
+.imagebuttons div {
+	padding-top: 26px;
+	min-width: 20px;
+	background-position: 50% 10%; 
+	background-repeat: no-repeat;
+}
+
+.buttons div:hover, .button:hover {
+	border-right: 2px gray solid;
+	border-bottom: 2px gray solid;
+	margin: 1px 3px 3px 1px;
+}
+
+#logo {
+	position: absolute;
+	width: 160px;
+}
+
+#version {
+	text-align: center;
+}
+
+#guiBarTop {
+	left: 174px;
+	width: 970px;
+	position: relative;
+}
+
+#guiBarLeft {
+	width: 147px;
+	height: 586px;
+	margin-top: 0px;
+	position: absolute;
+	background-color: white;
+}
+
+#guiBarRight {
+	width: 160px;
+	height: 586px;
+	margin-top: 0px;
+	left: 983px;
+	position: absolute;
+}
+
+#guiDrawingArea {
+	margin: 10px;
+	width: 50px;
+	margin-top: 0px;
+	margin-left: 24px;
+	left: 160px;
+	position: absolute;
+	width: 800px;
+	height: 600px;
+}
+
+#btnLaden {	background-image: url("gui/laden.png");		}
+#btnSpeichern {	background-image: url("gui/speichern.png");	}
+#btnRueck {	background-image: url("gui/undo.png");		}
+#btnVor {	background-image: url("gui/redo.png");		}
+#btnNeu {	background-image: url("gui/neu.png");		}
+#btnHg {	background-image: url("gui/hintergrunz.png");	}
+#btnBild {	background-image: url("gui/import.png");	}
+
+#grayscreen {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.8);
+}
+
+#popMenuOuter {
+	position: fixed;
+	left: 50%;
+	top: 20%;
+}
+
+#popMenu {
+	background-color:#DACC8A;
+	border: 2px black solid;
+	position: relative;
+	left: -50%;
+}
+
+#popMenuTitle {
+	font-weight: bold;
+	border-bottom: 2px black solid;
+	height: 17px;
+	padding: 5px;
+	padding-right: 5ex;
+}
+
+#popMenu .button {
+	float: right;
+	width: 2ex;
+	height: 2ex;
+	text-align: center;
+
+}
+
+#popScreen {
+	display: none;
+}

@@ -4,45 +4,71 @@
 <head>
 	<title>Kamelopedia Kamelbaukasten</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="StyleSheet" href="style.css">
-	<link rel="StyleSheet" href="gui.css">
+
+	<!-- Gummistiefel-Stylesheets -->
+	<link rel="StyleSheet" href="style/style.css">
+	<link rel="StyleSheet" href="style/gui.css">
+
+	<!-- JavaScript-Bibliotheken (also nicht von uns)-->
+	<script type="text/javascript" src="jslibs/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="jslibs/ejs/ejs.js"></script>
+
+	<!-- eigenes Javascript -->
+
+	<!-- als erstes die Index-Dateien laden -->
+	<script type="text/javascript" src="bilder/bibliothek/index.js"></script>
+	<script type="text/javascript" src="bilder/hintergrunz/index.js"></script>
+
+	<!-- dann das Hauptscript ausführen -->
+	<script type="text/javascript" src="script/gui.js"></script>
+	<script type="text/javascript" src="script/main.js"></script>
 </head>
 
-<body onLoad="javascript:splash()">
-	<script type="text/javascript" src="jquery-1.8.3.min.js"></script>
-	<script type="text/javascript" src="dragdrop.js"></script>
-	<script type="text/javascript" src="main.js"></script>
+<body>
 
-
+	<!-- Ganz oben links: Logo -->
 	<div id="logo">
-		<img src="Bilder/logo.gif" title="logo" />
+		<img src="bilder/logo.gif" title="logo" />
 		<div id="version"> Version 2.0</div>
 	</div>
 
+	<!-- Ganz oben: Toolbar -->
 	<div id="guiBarTop" class="guiBox">
 		<div class="buttons imagebuttons">
-			<div id="btnNeu">Neu</div>
-			<div id="btnLaden">Laden</div>
-			<div id="btnSpeichern">Speichern</div>
-			<div id="btnRueck">Rückgängig</div>
-			<div id="btnVor">Wiederholen</div>
-			<div id="btnHg">Hintergrunz ändern</div>
-			<div id="btnBild">Bild einfügen</div>
+			<div id="btnNeu" title="Ein neue Szene anlegen">Neu</div>
+			<div id="btnLaden" title="Eine Szene laden">Laden</div>
+			<div id="btnSpeichern" title="Die aktuelle Szene speichern">Speichern</div>
+			<div id="btnRueck" title="Rückgänging machen">Rückgängig</div>
+			<div id="btnVor" title="Wiederholen">Wiederholen</div>
+			<div id="btnHg" title="Das Hintergrunzbild ändern">Hintergrunz ändern</div>
+			<div id="btnBild" title="Ein Bild in die Szene importieren">Bild einfügen</div>
+			<div id="btnText" title="Einen Text in die Szene einfügen">Text einfügen</div>
 		</div><div class="clear"></div>
 	</div>
+
+	<!-- Die Bildleiste (Library) links - wird mit Javascript gefüllt -->
 	<div id="guiBarLeft" class="guiBox">
 		-- lädt --
 	</div>
+
+	<!-- Zeichenbereich -->
 	<div id="guiDrawingArea">
-		<img src="Bilder/Back.png" alt="" title="" border="0" height="600" width="800"/>
+		<img src="bilder/hintergrunz/Back.png" alt="" title="" border="0" height="600" width="800"/>
 	</div>
+
+	<!-- Die Objekt-Leiste rechts -->
 	<div id="guiBarRight" class="guiBox">
 		<div class="buttons">
 			<div>Löschen</div>
 			<div>Duplizieren</div>
+			<div>↑↑</div>
+			<div>↑</div>
+			<div>↓</div>
+			<div>↓↓</div>
 		</div>
 	</div>
 
+	<!-- Zeug für's Popup -->
 	<div id="popScreen">
 		<div id="grayscreen"></div>
 		<div id="popMenuOuter">
@@ -58,7 +84,7 @@
 		</div>
 	</div>
 
-<!--
+<!-- Alter kram: der muss noch weg!  –
 
 
 	<div style="position: absolute; top:10px; left:180px;">
@@ -154,12 +180,12 @@
 
 	<div style="position:relative;">
 		<div id="splsh" style="position:absolute;top:10px;left:20px;z-index:62;" >
-		<img src="Bilder/Copyright.gif" style="z-index:62; position:absolute; top:230px;left:30px;"/>
+		<img src="bilder/Copyright.gif" style="z-index:62; position:absolute; top:230px;left:30px;"/>
 		</div>
 
 		<div style="position: relative; overflow: hidden; width: 800px;" >
 			<div id="Zeichenbereich">
-				<img style="margin-top: 10px;" src="Bilder/Back.png" id="Backgr" alt="" title="" border="0" height="600" width="800"/>
+				<img style="margin-top: 10px;" src="bilder/Back.png" id="Backgr" alt="" title="" border="0" height="600" width="800"/>
 			</div>
 		</div>
 
@@ -208,111 +234,6 @@
 
 	<div style="Position:absolute; top:37px;left:10px;width:160px; height:628px; overflow:auto; border:1px solid #000; background-color:#F0F0F0;color:grey;font-size:0.85em;">
 	    <center>
-	    <a href="#" onclick="add_obj('GS_gruen1.gif');"><img src="Bilder/GS_gruen1.gif" height=50 border=0/></a>
-	    <a href="#" onclick="add_obj('Bastelpyramidegr.gif');"><img src="Bilder/Bastelpyramidegr.gif" width="60" border=0/></a>
-	    <a href="#" onclick="add_obj('GS_BritishLemur.gif');"><img src="Bilder/GS_BritishLemur.gif" height="45" border=0 /></a> 
-	    <a href="#" onclick="add_obj('GS_BritishLemurd.gif');"><img src="Bilder/GS_BritishLemurd.gif" height="45" border=0/></a><br />
-	    
-	    <a href="#" onclick="add_obj('Bastelpyramidemed.gif');"><img src="Bilder/Bastelpyramidemed.gif" width="40" border=0 /></a>
-	    <a href="#" onclick="add_obj('Bastelpyramidekl.gif');"><img src="Bilder/Bastelpyramidekl.gif" width="20" border=0 /></a>
-	    <a href="#" onclick="add_obj('GS_braun1.gif');"><img src="Bilder/GS_braun1.gif" border=0 /></a>
-	    <a href="#" onclick="add_obj('GS_braun2.gif');"><img src="Bilder/GS_braun2.gif" border=0 /></a><br />
-	    
-	    <a href="#" onclick="add_obj('Moepp.gif');"><img src="Bilder/Moepp.gif" width="40" border=0 /></a>
-	    <a href="#" onclick="add_obj('GSRegenkrone.gif');"><img src="Bilder/GSRegenkrone.gif" width="35" border=0 /></a>
-	    <a href="#" onclick="add_obj('GSRegenkroned.gif');"><img src="Bilder/GSRegenkroned.gif" width="35" border=0 /></a>
-	    <a href="#" onclick="add_obj('Gkam.gif');"><img src="Bilder/Gkam.gif" border=0 /></a><br />
-	    
-	    <a href="#" onclick="add_obj('GS_gruen2b.gif');"><img src="Bilder/GS_gruen2b.gif" width="28" border=0 /></a>
-	    <a href="#" onclick="add_obj('GS_gruen2.gif');"><img src="Bilder/GS_gruen2.gif" width="28" border=0 /></a>
-	    <a href="#" onclick="add_obj('Kam_Hut_Regen.gif');"><img src="Bilder/Kam_Hut_Regen.gif" width="28" border=0 /></a>
-	    <a href="#" onclick="add_obj('Kam_Hut_Regen2.gif');"><img src="Bilder/Kam_Hut_Regen2.gif" width="28" border=0 /></a><br />
-	   
-
-	    <a href="#" onclick="add_obj('GS_Tuempel.gif');"><img src="Bilder/GS_Tuempel.gif" width=100 border=0 /></a>
-	    <a href="#" onclick="add_obj('GS_frage.gif');"><img src="Bilder/GS_frage.gif" height=20 border=0 /></a><br />
-	    
-	    <a href="#" onclick="add_obj('GS_KleinesKamel.gif');"><img src="Bilder/GS_KleinesKamel.gif" width="34" border=0 /></a>
-	    <a href="#" onclick="add_obj('GS_Frisur1.gif');"><img src="Bilder/GS_Frisur1.gif" height=40 border=0 /></a>
-	    <a href="#" onclick="add_obj('GS_Frisur1d.gif');"><img src="Bilder/GS_Frisur1d.gif" height=40 border=0 /></a>
-	    <a href="#" onclick="add_obj('GS_KleinesKameld.gif');"><img src="Bilder/GS_KleinesKameld.gif" width="34" border=0 /></a><br />
-	    
-	    <a href="#" onclick="add_obj('Kam_Kopf_Orig1.gif');"><img src="Bilder/Kam_Kopf_Orig1.gif" width="30" border=0 /></a>
-	    <a href="#" onclick="add_obj('Kam_Kopf_Orig1b.gif');"><img src="Bilder/Kam_Kopf_Orig1b.gif" width="30" border=0 /></a>
-	    <a href="#" onclick="add_obj('GS_Smile.gif');"><img src="Bilder/GS_Smile.gif" width=34 border=0 /></a>
-	    <a href="#" onclick="add_obj('Smile.gif');"><img src="Bilder/Smile.gif" width=34 border=0 /></a><br />
-	    
-	    <a href="#" onclick="add_obj('Kam_Schwanz3.gif');"><img src="Bilder/Kam_Schwanz3.gif" width=30 border=0 /></a>
-	    <a href="#" onclick="add_obj('Kam_Schwanz3d.gif');"><img src="Bilder/Kam_Schwanz3d.gif" width=30 border=0 /></a>
-	    <a href="#" onclick="add_obj('Kopie_von_Kam_Kopf_Smily.gif');"><img src="Bilder/Kopie_von_Kam_Kopf_Smily.gif" width=34 border=0 /></a>
-	    <a href="#" onclick="add_obj('Kopie_von_Kam_Kopf_Smilyd.gif');"><img src="Bilder/Kopie_von_Kam_Kopf_Smilyd.gif" width=34 border=0 /></a><br />
-	 
-	    
-	    <a href="#" onclick="add_obj('GS_FnordCompact.gif');"><img src="Bilder/GS_FnordCompact.gif" width=70 border=0 /></a> 
-	    <a href="#" onclick="add_obj('GS_FnordCompactd.gif');"><img src="Bilder/GS_FnordCompactd.gif" width=70 border=0 /></a><br />
-	    
-	    <a href="#" onclick="add_obj('GS_weisses_objekt.gif');"><img src="Bilder/GS_weisses_objekt.gif" border=0 /></a>
-	    <a href="#" onclick="add_obj('GS_Kugeldings.gif');"><img src="Bilder/GS_Kugeldings.gif" border=0 /></a>
-	    <a href="#" onclick="add_obj('GS_Kugeldings2.gif');"><img src="Bilder/GS_Kugeldings2.gif" border=0 /></a>
-	    <a href="#" onclick="add_obj('GS_Rad.gif');"><img src="Bilder/GS_Rad.gif" width=20 border=0 /></a>
-	    <a href="#" onclick="add_obj('GS_Rad2.gif');"><img src="Bilder/GS_Rad2.gif" width=30 border=0 /></a><br />
-	    
-	 
-
-
-	     <a href="#" onclick="add_obj('GS_Zipfel1.gif');"><img src="Bilder/GS_Zipfel1.gif" width=25 border=0 /></a>
-	     <a href="#" onclick="add_obj('GS_Blase.gif');"><img src="Bilder/GS_Blase.gif" width=80 border=0 /></a>
-	     <a href="#" onclick="add_obj('GS_Zipfe2.gif');"><img src="Bilder/GS_Zipfe2.gif" width=25 border=0 /></a><br />
-	     
-	 
-	    
-	    <a href="#" onclick="add_obj('Kam_Beid_hinten1.gif');"><img src="Bilder/Kam_Beid_hinten1.gif" height=40 border=0 /></a> 
-	    <a href="#" onclick="add_obj('Kam_Bein_vorne1.gif');"><img src="Bilder/Kam_Bein_vorne1.gif" height=40 border=0 /></a> 
-	    <a href="#" onclick="add_obj('Kam_Gummistiefel_hinten1.gif');"><img src="Bilder/Kam_Gummistiefel_hinten1.gif" height=40 border=0 /></a> 
-	    <a href="#" onclick="add_obj('Kam_Gummistiefel_vorne1.gif');"><img src="Bilder/Kam_Gummistiefel_vorne1.gif" height=40 border=0 /></a> 
-	    <a href="#" onclick="add_obj('Kam_Beid_hinten1d.gif');"><img src="Bilder/Kam_Beid_hinten1d.gif" height=40 border=0 /></a> 
-	    <a href="#" onclick="add_obj('Kam_Bein_vorne1d.gif');"><img src="Bilder/Kam_Bein_vorne1d.gif" height=40 border=0 /></a> <br />
-	    
-	    <a href="#" onclick="add_obj('Kam_Gummistiefel_hinten1d.gif');"><img src="Bilder/Kam_Gummistiefel_hinten1d.gif" height=40 border=0 /></a> 
-	    <a href="#" onclick="add_obj('Kam_Gummistiefel_vorne1d.gif');"><img src="Bilder/Kam_Gummistiefel_vorne1d.gif" height=40 border=0 /></a>
-	    <a href="#" onclick="add_obj('Kam_Schwanz1.gif');"><img src="Bilder/Kam_Schwanz1.gif" height=40 border=0 /></a> 
-	    <a href="#" onclick="add_obj('Kam_Schwanz1d.gif');"><img src="Bilder/Kam_Schwanz1d.gif" height=40 border=0 /></a>
-	    <a href="#" onclick="add_obj('GS_Ding01d.gif');"><img src="Bilder/GS_Ding01d.gif" width=45 border=0 /></a><br />
-	   
-
-	    <a href="#" onclick="add_obj('Kam_Hoeccker_05.gif');"><img src="Bilder/Kam_Hoeccker_05.gif" width=45 border=0 /></a>
-	    <a href="#" onclick="add_obj('Kam_Hoeccker_07.gif');"><img src="Bilder/Kam_Hoeccker_07.gif" width=45 border=0 /></a>
-	    <a href="#" onclick="add_obj('Kam_Hoeccker_05d.gif');"><img src="Bilder/Kam_Hoeccker_05d.gif" width=45 border=0 /></a><br />
-	    
-	    <a href="#" onclick="add_obj('Kam_Hoeccker_07d.gif');"><img src="Bilder/Kam_Hoeccker_07d.gif" width=45 border=0 /></a>
-	    <a href="#" onclick="add_obj('GS_Ding01.gif');"><img src="Bilder/GS_Ding01.gif" width=45 border=0 /></a>
-	    <a href="#" onclick="add_obj('Kam_Hoeccker_01.gif');"><img src="Bilder/Kam_Hoeccker_01.gif" width=45 border=0 /></a><br />
-	    
-	    <a href="#" onclick="add_obj('Kam_Hoeccker_010.gif');"><img src="Bilder/Kam_Hoeccker_010.gif" width=45 border=0 /></a>
-	    <a href="#" onclick="add_obj('Kam_Hoeccker_02.gif');"><img src="Bilder/Kam_Hoeccker_02.gif" width=45 border=0 /></a>
-	    <a href="#" onclick="add_obj('Kam_Hoeccker_03.gif');"><img src="Bilder/Kam_Hoeccker_03.gif" width=45 border=0 /></a><br />
-	    
-	    <a href="#" onclick="add_obj('Kam_Hoeccker_04.gif');"><img src="Bilder/Kam_Hoeccker_04.gif" width=45 border=0 /></a>
-	    <a href="#" onclick="add_obj('Kam_Hoeccker_06.gif');"><img src="Bilder/Kam_Hoeccker_06.gif" width=45 border=0 /></a>
-	    <a href="#" onclick="add_obj('Kam_Hoeccker_08.gif');"><img src="Bilder/Kam_Hoeccker_08.gif" width=45 border=0 /></a><br />
-	    
-	    <a href="#" onclick="add_obj('Kam_Hoeccker_09.gif');"><img src="Bilder/Kam_Hoeccker_09.gif" width=45 border=0 /></a> 
-	    <a href="#" onclick="add_obj('Kam_Hoeccker_010d.gif');"><img src="Bilder/Kam_Hoeccker_010d.gif" width=45 border=0 /></a>
-	    <a href="#" onclick="add_obj('Kam_Hoeccker_01d.gif');"><img src="Bilder/Kam_Hoeccker_01d.gif" width=45 border=0 /></a><br />
-	    
-	    <a href="#" onclick="add_obj('Kam_Hoeccker_02d.gif');"><img src="Bilder/Kam_Hoeccker_02d.gif" width=45 border=0 /></a>
-	    <a href="#" onclick="add_obj('Kam_Hoeccker_03d.gif');"><img src="Bilder/Kam_Hoeccker_03d.gif" width=45 border=0 /></a>
-	    <a href="#" onclick="add_obj('Kam_Hoeccker_04d.gif');"><img src="Bilder/Kam_Hoeccker_04d.gif" width=45 border=0 /></a><br />
-
-	    <a href="#" onclick="add_obj('Kam_Hoeccker_06d.gif');"><img src="Bilder/Kam_Hoeccker_06d.gif" width=45 border=0 /></a>
-	    <a href="#" onclick="add_obj('Kam_Hoeccker_08d.gif');"><img src="Bilder/Kam_Hoeccker_08d.gif" width=45 border=0 /></a>
-	    <a href="#" onclick="add_obj('Kam_Hoeccker_09d.gif');"><img src="Bilder/Kam_Hoeccker_09d.gif" width=45 border=0 /></a><br />  
-	    
-	    <a href="#" onclick="add_obj('Kam_Rumpf_Hals1.gif');"><img src="Bilder/Kam_Rumpf_Hals1.gif" width=55 border=0 /></a>
-	    <a href="#" onclick="add_obj('Kam_Rumpf_Regen.gif');"><img src="Bilder/Kam_Rumpf_Regen.gif" width=55 border=0 /></a><br />
-	    
-	    <a href="#" onclick="add_obj('Kam_Rumpf_Hals1d.gif');"><img src="Bilder/Kam_Rumpf_Hals1d.gif" width=55 border=0 /></a>
-	    <a href="#" onclick="add_obj('Kam_Rumpf_Regend.gif');"><img src="Bilder/Kam_Rumpf_Regend.gif" width=55 border=0 /></a><br />
 	    </center>
 	</div>
 

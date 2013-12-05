@@ -74,7 +74,7 @@ function History() {
 			$("#btnVor").addClass("disabled").attr('title', 'Wiederholen');
 		} else {
 			$("#btnVor").removeClass("disabled");
-			$("#btnRueck").attr('title', 'Wiederholen: ' + actionStack[nextAction].getText());
+			$("#btnVor").attr('title', 'Wiederholen: ' + actionStack[nextAction].getText());
 		}
 	}
 

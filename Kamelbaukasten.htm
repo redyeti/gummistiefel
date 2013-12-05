@@ -9,9 +9,15 @@
 	<link rel="StyleSheet" href="style/style.css">
 	<link rel="StyleSheet" href="style/gui.css">
 
-	<!-- JavaScript-Bibliotheken (also nicht von uns)-->
+	<!-- templates -->
+	<script type="text/x-ejs" src="templates/libraryButton.ejs" id="ejs" ></script>
+
+	<!-- Bibliotheken (also nicht von uns)-->
 	<script type="text/javascript" src="jslibs/jquery-1.9.1.js"></script>
 	<script type="text/javascript" src="jslibs/ejs/ejs.js"></script>
+	<script type="text/javascript" src="jslibs/freetrans/Matrix.js"></script>
+	<script type="text/javascript" src="jslibs/freetrans/jquery.freetrans.js"></script>
+	<link rel="StyleSheet" href="jslibs/freetrans/jquery.freetrans.css">
 
 	<!-- eigenes Javascript -->
 
@@ -53,7 +59,9 @@
 
 	<!-- Zeichenbereich -->
 	<div id="guiDrawingArea">
-		<img src="bilder/hintergrunz/Back.png" alt="" title="" border="0" height="600" width="800"/>
+		<div id="Zeichenbereich">
+			<img id="Hg" src="bilder/hintergrunz/Back.png" alt="" title="" border="0" height="600" width="800" />
+		</div>
 	</div>
 
 	<!-- Die Objekt-Leiste rechts -->

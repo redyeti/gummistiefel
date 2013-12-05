@@ -1,3 +1,12 @@
+img, .buttons div, .button {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
 .clear {
 	clear: both;
 }
@@ -13,13 +22,16 @@
 }
 
 .buttons div, .button {
-	border-left: 2px white solid;
-	border-top: 2px white solid;
-	border-right: 2px white solid;
-	border-bottom: 2px white solid;
+	border: 2px white solid;
 	padding: 1px 3px;
 	margin: 2px 2px;
 	cursor: pointer;
+}
+
+.buttons div.disabled, .button.disabled {
+	border: 2px gray solid;
+	color: gray;
+	cursor: default;
 }
 
 .imagebuttons div {
@@ -33,6 +45,10 @@
 	border-right: 2px gray solid;
 	border-bottom: 2px gray solid;
 	margin: 1px 3px 3px 1px;
+}
+
+.buttons div.disabled:hover, .button.disabled:hover {
+	margin: 2px 2px;
 }
 
 #logo {
@@ -89,6 +105,9 @@
 #btnBild {	background-image: url("../bilder/gui/import.png");	}
 #btnText {	background-image: url("../bilder/gui/text.png");	}
 
+#btnRueck.disabled {	background-image: url("../bilder/gui/dis/undo.png");	}
+#btnVor.disabled {	background-image: url("../bilder/gui/dis/redo.png");	}
+
 #grayscreen {
 	position: fixed;
 	left: 0px;
@@ -133,4 +152,36 @@
 
 .libraryButton {
 	cursor: pointer;
+}
+
+.zeichen {
+	position: absolute;
+}
+
+#Zeichenbereich {
+	position: absolute;
+}
+
+.ft-container {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	cursor: pointer;
+}
+
+.ft-rotator {
+	background-image: url('../bilder/gui/drehen.png');
+	position: absolute;
+	height: 16px;
+	width: 16px;
+	cursor: pointer;
+	
+}
+
+.ft-scaler {
+	cursor: pointer;
+}
+
+#Zeichenbereich {
+	overflow: hidden;
 }

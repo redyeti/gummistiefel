@@ -152,6 +152,7 @@
                         });
                         
                         var up = function(evt) {
+				sel.trigger('freetrans');
                                 $(document).unbind('mousemove.freetrans', drag);
                                 $(document).unbind('mouseup.freetrans', up);
                         };
@@ -182,6 +183,7 @@
                         });
                         
                         var up = function(evt) {
+				sel.trigger('freetrans');
                                 $(document).unbind('mousemove.freetrans', drag);
                                 $(document).unbind('mouseup.freetrans', up);
                         };
@@ -307,7 +309,7 @@
                                 if (scaleMe) {
                                         scaleMe(Point(evt.pageX, evt.pageY));
 
-                                        if(evt.shiftKey || settings.maintainAspectRatio) {
+                                        if(!evt.shiftKey || settings.maintainAspectRatio) {
                                                 if(!handle.hasClass('ft-scaler-center')) {
                                                         data.scaley = ((owid*data.scalex)*(1/ratio))/ohgt;                                                        
                                                         
@@ -345,6 +347,7 @@
                         
                         var up = function(evt) {
                                 _draw(sel, data);
+				sel.trigger('freetrans');
                                 $(document).unbind('mousemove.freetrans', drag);
                                 $(document).unbind('mouseup.freetrans', up);
                         };
@@ -368,7 +371,7 @@
         function _noSelect(callback) {
                 return function(evt) {
                         evt.preventDefault();
-                        evt.stopImmediatePropagation();
+                        //evt.stopImmediatePropagation();
                         return callback(evt);
                 }
         }

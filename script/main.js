@@ -59,6 +59,18 @@ $(function () {
 	$("#btnDel").click(function() {
 		window.scene.history.append(new HistoryItemDelete(window.scene.getSelection())).redo();
 	});
+	$("#btnToTop").click(function() {
+		window.scene.history.append(new HistoryItemChLayerTop(window.scene.getSelection())).redo();
+	});
+	$("#btnToBottom").click(function() {
+		window.scene.history.append(new HistoryItemChLayerBottom(window.scene.getSelection())).redo();
+	});
+	$("#btnDown").click(function() {
+		window.scene.history.append(new HistoryItemChLayerDown(window.scene.getSelection())).redo();
+	});
+	$("#btnUp").click(function() {
+		window.scene.history.append(new HistoryItemChLayerUp(window.scene.getSelection())).redo();
+	});
 
 	window.scene = new Zeichenbereich('#Zeichenbereich');
 });

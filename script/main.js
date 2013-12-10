@@ -1,16 +1,24 @@
+/*
+ * Initialisierungen etc.
+ */
+
 "use strict";
 
 $(function () {
 	// Initialisiere Bilder links
 	
-	// Für gewöhnlich würde das hier in einem eigenen ejs-File stehen, aber da der Kamelbaukasten auch
-	// lokal ausgeführt werden können soll, muss das hier rein, da Opera, Chrome & Co sonst aus
-	// Sicherheitsgründen das Nachladen der Datei verbieten (Same-Origin-Policy)
-	var template = '<% for (var i=0; i< images.length; i++) { %>'
-		     + '<img src="bilder/bibliothek/<%= images[i][0] %>" style="<%= images[i][1] %>" class="libraryButton" draggable="false"/>'
-		     + '<% } %>';
-		
-	new EJS({text: template}).update('guiBarLeft', {images: bibliothek});
+	var container = $('#guiBarLeft').empty();
+	for (var i=0; i< bibliothek.length; i++) {
+		container.append(
+			crel('img', {
+				'src': "bilder/bibliothek/" + bibliothek[i][0],
+				'style': bibliothek[i][1],
+				'class': "libraryButton",
+				'draggable': false
+			})
+		);
+	}	
+
 	// Weise denen auch eine Funktion zu
 	$(".libraryButton").click( function (evt) {
 		console.log(this, this.src);
@@ -29,6 +37,24 @@ $(function () {
 			return;
 
 		window.scene.history.redo();
+	});
+
+	$("#btnNeu").click(function () {
+		if (window.scene.history.isEmpty()) {
+			window.scene.clear();
+		} else {
+			$("<div title='Neues Bild erstellen?'>Wenn du ein neues Bild erstellst, wird all deine bisherige Arbeit vernichtet, wenn du sie nicht gespeichert hast. Trotzdem ein neues Bild erstellen?</div>").dialog({
+				modal: true,
+				buttons: {
+					'Ja, ich will!': function () { window.scene.clear(); $(this).dialog("close"); },
+					'Doch behalten': function () { $(this).dialog("close"); }
+				}	
+			});
+		}
+	});
+
+	$("#btnDup").click(function() {
+		window.scene.history.append(new HistoryItemDuplicate(window.scene.getSelection())).redo();
 	});
 
 	window.scene = new Zeichenbereich('#Zeichenbereich');

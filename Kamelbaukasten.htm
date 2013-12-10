@@ -1,6 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de" dir="ltr">
 
+<!--
+	Hinweis: Da der Kamelbaukasten nach wie vor auch lokal (d.h. unter file://) laufen
+	können soll, müssen wir leider auf Ajax & Co. verzichten. Html und Templates müssen
+	entweder hier gleich rein (display:none), oder notdürftig als String im Script
+	zusammengefriemelt werden ...
+-->
+
 <head>
 	<title>Kamelopedia Kamelbaukasten</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -9,12 +16,18 @@
 	<link rel="StyleSheet" href="style/style.css">
 	<link rel="StyleSheet" href="style/gui.css">
 
-	<!-- templates -->
-	<script type="text/x-ejs" src="templates/libraryButton.ejs" id="ejs" ></script>
-
 	<!-- Bibliotheken (also nicht von uns)-->
+
+	<!-- jQuery: doof wer das nicht nimmt -->
 	<script type="text/javascript" src="jslibs/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="jslibs/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
+	<link rel="StyleSheet" href="jslibs/jquery-ui-1.10.3.custom/css/pepper-grinder/jquery-ui-1.10.3.custom.min.css">
+
+	<!-- templates und so -->
 	<script type="text/javascript" src="jslibs/ejs/ejs.js"></script>
+	<script type="text/javascript" src="jslibs/crel.js"></script>
+
+	<!-- Zeug für drag/drop, drehen etc. -->
 	<script type="text/javascript" src="jslibs/freetrans/Matrix.js"></script>
 	<script type="text/javascript" src="jslibs/freetrans/jquery.freetrans.js"></script>
 	<link rel="StyleSheet" href="jslibs/freetrans/jquery.freetrans.css">
@@ -25,9 +38,15 @@
 	<script type="text/javascript" src="bilder/bibliothek/index.js"></script>
 	<script type="text/javascript" src="bilder/hintergrunz/index.js"></script>
 
-	<!-- dann das Hauptscript ausführen -->
-	<script type="text/javascript" src="script/gui.js"></script>
-	<script type="text/javascript" src="script/main.js"></script>
+	<!-- dann alle Klassen und Funktionen laden -->
+	<script type="text/javascript" src="script/actions.js"></script>
+	<script type="text/javascript" src="script/drawing.js"></script>
+	<script type="text/javascript" src="script/helper.js"></script>
+	<script type="text/javascript" src="script/history.js"></script>
+	<script type="text/javascript" src="script/popup.js"></script>
+
+	<!-- ganz zum Schluss das Hauptscript ausführen -->
+	<script type="text/javascript" src="script/main.js" charset="UTF-8"></script>
 </head>
 
 <body>
@@ -66,31 +85,41 @@
 
 	<!-- Die Objekt-Leiste rechts -->
 	<div id="guiBarRight" class="guiBox">
-		<div class="buttons">
-			<div>Löschen</div>
-			<div>Duplizieren</div>
-			<div>↑↑</div>
-			<div>↑</div>
-			<div>↓</div>
-			<div>↓↓</div>
-		</div>
-	</div>
-
-	<!-- Zeug für's Popup -->
-	<div id="popScreen">
-		<div id="grayscreen"></div>
-		<div id="popMenuOuter">
-			<div id="popMenu">
-				<div class="button">X</div>
-				<div id="popMenuTitle">
-					Bla
-				</div>
-				<div>
-					Inhalt
-				</div>
+		<div id="objInfo" style="display: none;">
+			<div style="margin-right: 7px;"><input id="objId" style="font-size: 120%; width: 100%;" value="id"></div>
+			<hr>
+			<div class="buttons">
+				<div>Löschen</div>
+				<div id="btnDup">Duplizieren</div>
+				<div>↑↑</div>
+				<div>↑</div>
+				<div>↓</div>
+				<div>↓↓</div>
+			</div><div class="clear"></div>
+			<hr>
+			<div id="objPos"></div>
+			<hr>
+			<div id="objGraphic">
+				<table>
+					<tr>
+						<td>Datei:</td>
+						<td>xy.ext</td>
+					</tr><tr>
+						<td>Ort:</td>
+						<td>Lokal</td>
+					</tr>
+						<td>Quelle:</td>
+						<td><a>Kamelo</a></td>
+					</tr>
+				</table>
+			</div>
+			<div id="objText">
+				<div>[F][K][I][U][D]</div>
+				<div>Größe, Farbe (Palette, Picker), Font(-family), Strichstärke, Text (!)</div>
 			</div>
 		</div>
 	</div>
+
 
 <!-- Alter kram: der muss noch weg!  –
 

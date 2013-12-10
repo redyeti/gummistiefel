@@ -48,6 +48,7 @@ function Zeichenbereich(area) {
 		this.history.clear();
 		$hg.attr("src","bilder/hintergrunz/Back.png");
 		$(area).find("*").not($hg).remove();
+		return this;
 	}
 
 	this.select = function select($obj) {
@@ -61,6 +62,7 @@ function Zeichenbereich(area) {
 		} else {
 			$("#objInfo").hide();
 		}
+		return this;
 	}
 
 	this.updateObjInfo = function updateObjInfo() {
@@ -110,12 +112,27 @@ function Zeichenbereich(area) {
 				)
 			)
 		);
+		return this;
 	};
 
 	this.getSelection = function getSelection() {
 		return $selection;
 	}
 
+	this.suspend = function suspend() {
+		$(area).find(".zeichen").each(function () {
+			$(this).data('gum-ft', new Copy($(this).data('freetrans')));
+			$(this).freetrans('destroy');
+		});
+		return this;
+	}
+	this.resume = function resume() {
+		$(area).find(".zeichen").each(function () {
+			$(this).freetrans(new Copy($(this).data('gum-ft')));
+		});
+		this.select(this.getSelection());
+		return this;
+	}
 
 	/*
  	this.clear

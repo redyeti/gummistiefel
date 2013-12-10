@@ -142,28 +142,19 @@ function HistoryItemDelete(item) {
 
 function HistoryItemChLayer(item, aim) {
 	var $item = $(item);
-
-	var $pAll = $item.parents().andSelf();
-
-	var $zPrev = $pAll.prevAll().find(".zeichen");
-	var $zNext = $pAll.nextAll().find(".zeichen");
-
-	var $prev = $($zPrev[0]);
-
-	var $aim = aim($zPrev, $zNext, $prev);
+	window.scene.suspend();
+	var $prev = $item.prev();
+	window.scene.resume();
 
 	this.redo = function redo() {
-		console.log("Layer", $item, $aim, $prev);
-		$item.gs('deInit');
-		$aim.gs('deInit');
-		$item.prependAfter($aim, "#Zeichenbereich").gs('reInit');
-		$aim.gs('reInit');
+		window.scene.suspend();
+		aim($item);
+		window.scene.resume();
 	};
 	this.undo = function undo() {
-		$item.gs('deInit');
-		$prev.gs('deInit');
-		$item.prependAfter($aim, "#Zeichenbereich").gs('reInit');
-		$prev.gs('reInit');
+		window.scene.suspend();
+		$item.prependAfter($prev, "#Zeichenbereich");
+		window.scene.resume();
 	};
 	this.getText = function getText() {
 		return "Ebene ändern";
@@ -172,28 +163,28 @@ function HistoryItemChLayer(item, aim) {
 
 //HistoryItemChLayerTop.prototype = new HistoryItemChLayer();
 function HistoryItemChLayerBottom(item) {
-	HistoryItemChLayer.call(this, item, function ($zPref, $zNext, $prev) {
-		return $(null);
+	HistoryItemChLayer.call(this, item, function ($item) {
+		$item.prependTo($item.parent());
 	});
 }
 
 //HistoryItemChLayerBottom.prototype = new HistoryItemChLayer();
 function HistoryItemChLayerTop(item) {
-	HistoryItemChLayer.call(this, item, function ($zPref, $zNext, $prev) {
-		return $(($zNext.length) ? $zNext[$zNext.length-1] : $zPrev[0]);
+	HistoryItemChLayer.call(this, item, function ($item) {
+		$item.appendTo($item.parent());
 	});
 }
 
 //HistoryItemChLayerDown.prototype = new HistoryItemChLayer();
 function HistoryItemChLayerUp(item) {
-	HistoryItemChLayer.call(this, item, function ($zPref, $zNext, $prev) {
-		return $($zNext[0]);
+	HistoryItemChLayer.call(this, item, function ($item) {
+		$item.insertAfter($item.next(".zeichen"));
 	});
 }
 
 //HistoryItemChLayerUp.prototype = new HistoryItemChLayer();
 function HistoryItemChLayerDown(item) {
-	HistoryItemChLayer.call(this, item, function ($zPrev, $zNext, $prev) {
-		return $(($zPrev.length > 1) ? $zPrev[1] : $zPrev[0]);
+	HistoryItemChLayer.call(this, item, function ($item) {
+		$item.insertBefore($item.prev(".zeichen"));
 	});
 }

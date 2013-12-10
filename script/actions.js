@@ -83,14 +83,14 @@ function HistoryItemCSS(element, prop, after) {
 	}
 }
 
-$.fn.appendBefore = function(siblingSelector, parentSelector) {
+$.fn.prependAfter = function(siblingSelector, parentSelector) {
 	var $s = siblingSelector;
 	var $p = parentSelector;
 
 	if ($s.length)
-		return this.insertBefore(siblingSelector);
+		return this.insertAfter(siblingSelector);
 	else
-		return this.appendTo(parentSelector);
+		return this.prependTo(parentSelector);
 }
 
 function HistoryItemDuplicate(orig) {
@@ -121,3 +121,21 @@ function HistoryItemDuplicate(orig) {
 	};
 }
 
+function HistoryItemDelete(item) {
+	var $item = $(item);
+	var $prev = $($item.parents().andSelf().prevAll().find(".zeichen")[0]);
+
+	console.log("del",$item,$prev);
+
+	this.redo = function redo() {
+		$item.gs('remove');
+	};
+	this.undo = function undo() {
+		$prev.gs('deInit');
+		$item.prependAfter($prev, "#Zeichenbereich").gs('reInit');
+		$prev.gs('reInit');
+	};
+	this.getText = function getText() {
+		return "Löschen";
+	};
+}

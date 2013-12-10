@@ -56,6 +56,9 @@ $(function () {
 	$("#btnDup").click(function() {
 		window.scene.history.append(new HistoryItemDuplicate(window.scene.getSelection())).redo();
 	});
+	$("#btnDel").click(function() {
+		window.scene.history.append(new HistoryItemDelete(window.scene.getSelection())).redo();
+	});
 
 	window.scene = new Zeichenbereich('#Zeichenbereich');
 });

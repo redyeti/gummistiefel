@@ -161,28 +161,24 @@ function HistoryItemChLayer(item, aim) {
 	};
 }
 
-//HistoryItemChLayerTop.prototype = new HistoryItemChLayer();
 function HistoryItemChLayerBottom(item) {
 	HistoryItemChLayer.call(this, item, function ($item) {
 		$item.prependTo($item.parent());
 	});
 }
 
-//HistoryItemChLayerBottom.prototype = new HistoryItemChLayer();
 function HistoryItemChLayerTop(item) {
 	HistoryItemChLayer.call(this, item, function ($item) {
 		$item.appendTo($item.parent());
 	});
 }
 
-//HistoryItemChLayerDown.prototype = new HistoryItemChLayer();
 function HistoryItemChLayerUp(item) {
 	HistoryItemChLayer.call(this, item, function ($item) {
 		$item.insertAfter($item.next(".zeichen"));
 	});
 }
 
-//HistoryItemChLayerUp.prototype = new HistoryItemChLayer();
 function HistoryItemChLayerDown(item) {
 	HistoryItemChLayer.call(this, item, function ($item) {
 		$item.insertBefore($item.prev(".zeichen"));

@@ -7,9 +7,11 @@
 function HistoryItemCreate(handle) {
 	this.redo = function redo() {
 		handle.insert();
+		window.scene.select(handle.$selector);
 	};
 	this.undo = function undo() {
 		handle.remove();
+		window.scene.selectionFix();
 	};
 	this.getText = function getText() {
 		return "Element erzeugen";
@@ -25,16 +27,10 @@ function HistoryItemTransform(element) {
 	console.log($element, '*', before, after);
 
 	this.redo = function redo() {
-		console.log($element, '>', before, after);
-		$element.freetrans('destroy');
-		$element.freetrans(new Copy(after));
-		$element.data('gum-ft', new Copy($element.data('freetrans')));
+		$element.data('gum-ft', after);
 	};
 	this.undo = function undo() {
-		console.log($element, '<', before, after);
-		$element.freetrans('destroy');
-		$element.freetrans(new Copy(before));
-		$element.data('gum-ft', new Copy($element.data('freetrans')));
+		$element.data('gum-ft', before);
 	};
 	this.getText = function getText() {
 		return "Element bewegen / transformieren";
@@ -46,19 +42,11 @@ function HistoryItemTransformField(element, prop, after, factor) {
 	var before = $element.data('freetrans')[prop];
 	
 	this.redo = function redo() {
-		var o = new Copy($element.data('freetrans'));
-		o[prop] = parseFloat(after)/factor;
-		$element.freetrans('destroy');
-		$element.freetrans(o);
-		$element.data('gum-ft', new Copy($element.data('freetrans')));
+		$element.data('gum-ft')[prop] = parseFloat(after)/factor;
 	};
 
 	this.undo = function undo() {
-		var o = new Copy($element.data('freetrans'));
-		o[prop] = parseFloat(before)/factor;
-		$element.freetrans('destroy');
-		$element.freetrans(o);
-		$element.data('gum-ft', new Copy($element.data('freetrans')));
+		$element.data('gum-ft')[prop] = parseFloat(before)/factor;
 	};
 
 	this.getText = function getText() {
@@ -83,23 +71,13 @@ function HistoryItemCSS(element, prop, after) {
 	}
 }
 
-$.fn.prependAfter = function(siblingSelector, parentSelector) {
-	var $s = siblingSelector;
-	var $p = parentSelector;
-
-	if ($s.length)
-		return this.insertAfter(siblingSelector);
-	else
-		return this.prependTo(parentSelector);
-}
-
 function HistoryItemDuplicate(orig) {
 	var $orig = $(orig);
 
 	// avoid duplicate ids
 	var id = $orig.attr('id');
 	$orig.removeAttr('id');
-	$orig.gs('deInit');
+	window.scene.suspend();
 
 	var $deriv = $orig.clone(false);
 	$deriv.data('gum-ft', new Copy($orig.data('gum-ft')));
@@ -107,14 +85,14 @@ function HistoryItemDuplicate(orig) {
 	// reassign ids
 	$orig.attr('id',id);
 	$deriv.attr('id', scene.getID());
+	window.scene.resume();
 
 	this.redo = function redo() {
-		$orig.gs('deInit');
 		$deriv.insertBefore($orig).gs('reInit');
-		$orig.gs('reInit');
 	};
 	this.undo = function undo() {
 		$deriv.gs('remove');
+		window.scene.selectionFix();
 	};
 	this.getText = function getText() {
 		return "Element duplizieren";
@@ -124,6 +102,8 @@ function HistoryItemDuplicate(orig) {
 function HistoryItemDelete(item) {
 	var $item = $(item);
 	var $prev = $($item.parents().andSelf().prevAll().find(".zeichen")[0]);
+
+	//FIXME: Use selectionFix / suspend/resume
 
 	console.log("del",$item,$prev);
 
@@ -147,14 +127,10 @@ function HistoryItemChLayer(item, aim) {
 	window.scene.resume();
 
 	this.redo = function redo() {
-		window.scene.suspend();
 		aim($item);
-		window.scene.resume();
 	};
 	this.undo = function undo() {
-		window.scene.suspend();
 		$item.prependAfter($prev, "#Zeichenbereich");
-		window.scene.resume();
 	};
 	this.getText = function getText() {
 		return "Ebene ändern";
@@ -163,7 +139,7 @@ function HistoryItemChLayer(item, aim) {
 
 function HistoryItemChLayerBottom(item) {
 	HistoryItemChLayer.call(this, item, function ($item) {
-		$item.prependTo($item.parent());
+		$item.insertAfter("#Hg");
 	});
 }
 

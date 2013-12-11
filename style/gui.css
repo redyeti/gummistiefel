@@ -185,3 +185,8 @@ img, .buttons div, .button {
 #Zeichenbereich {
 	overflow: hidden;
 }
+
+img {
+	image-rendering: optimizeQuality;  /* Firefox 3.6+; default behavior is identical, no need to specify */
+	ms-interpolation-mode: bicubic;   /* Internet Explorer 7.0; default in IE8+ */
+}

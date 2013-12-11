@@ -53,6 +53,34 @@ $(function () {
 		}
 	});
 
+	$("#btnHg").click(function () {
+		$(crel("div", {title: "Hintergrunz ändern"},
+			crel("div","Wähle deinen Hintergrund aus:"),
+			function(output) {
+				for (var h in hintergrunzDateien) {
+					var i = crel("img", {
+						style: "cursor: pointer;",
+						height: 150,
+						width: 200,
+						src:"bilder/hintergrunz/"+hintergrunzDateien[h]
+					});
+					$(i).click(function () {
+						$("#Hg").attr('src', this.src);
+						$(this).parent(".ui-dialog-content").dialog("close");
+					});
+					output(i);
+				}
+			},
+			crel("div", {"class": "clear"})
+		)).dialog({
+			minWidth: 630,
+			modal: true,
+			buttons: {
+				'Abbruch': function () { $(this).dialog("close"); }
+			}	
+		});
+	});
+
 	$("#btnDup").click(function() {
 		window.scene.history.append(new HistoryItemDuplicate(window.scene.getSelection())).redo();
 	});

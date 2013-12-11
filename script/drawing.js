@@ -48,6 +48,7 @@ function Zeichenbereich(area) {
 		this.history.clear();
 		$hg.attr("src","bilder/hintergrunz/Back.png");
 		$(area).find("*").not($hg).remove();
+		nextId = 1;
 		return this;
 	}
 

@@ -43,7 +43,6 @@
 	<script type="text/javascript" src="script/drawing.js"></script>
 	<script type="text/javascript" src="script/helper.js"></script>
 	<script type="text/javascript" src="script/history.js"></script>
-	<script type="text/javascript" src="script/popup.js"></script>
 
 	<!-- ganz zum Schluss das Hauptscript ausführen -->
 	<script type="text/javascript" src="script/main.js" charset="UTF-8"></script>
@@ -79,7 +78,7 @@
 	<!-- Zeichenbereich -->
 	<div id="guiDrawingArea">
 		<div id="Zeichenbereich">
-			<img id="Hg" src="bilder/hintergrunz/Back.png" alt="" title="" border="0" height="600" width="800" />
+			<img id="Hg" class="bshg" src="bilder/hintergrunz/Back.png" alt="" title="" border="0" height="600" width="800" />
 		</div>
 	</div>
 
@@ -99,7 +98,7 @@
 			<hr>
 			<div id="objPos"></div>
 			<hr>
-			<div id="objGraphic">
+			<div class="objSpecificInfo" id="objGraphic">
 				<table>
 					<tr>
 						<td>Datei:</td>
@@ -113,7 +112,7 @@
 					</tr>
 				</table>
 			</div>
-			<div id="objText">
+			<div class="objSpecificInfo" id="objText">
 				<div>[F][K][I][U][D]</div>
 				<div>Größe, Farbe (Palette, Picker), Font(-family), Strichstärke, Text (!)</div>
 			</div>

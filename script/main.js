@@ -62,10 +62,11 @@ $(function () {
 						style: "cursor: pointer;",
 						height: 150,
 						width: 200,
+						'class': 'bshg',
 						src:"bilder/hintergrunz/"+hintergrunzDateien[h]
 					});
 					$(i).click(function () {
-						$("#Hg").attr('src', this.src);
+						window.scene.history.append(new HistoryItemBackground(this.src)).redo();
 						$(this).parent(".ui-dialog-content").dialog("close");
 					});
 					output(i);

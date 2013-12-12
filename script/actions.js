@@ -92,7 +92,6 @@ function HistoryItemDuplicate(orig) {
 	};
 	this.undo = function undo() {
 		$deriv.gs('remove');
-		window.scene.selectionFix();
 	};
 	this.getText = function getText() {
 		return "Element duplizieren";
@@ -101,9 +100,9 @@ function HistoryItemDuplicate(orig) {
 
 function HistoryItemDelete(item) {
 	var $item = $(item);
-	var $prev = $($item.parents().andSelf().prevAll().find(".zeichen")[0]);
-
-	//FIXME: Use selectionFix / suspend/resume
+	window.scene.suspend();
+	var $prev = $item.prev();
+	window.scene.resume();
 
 	console.log("del",$item,$prev);
 
@@ -111,9 +110,7 @@ function HistoryItemDelete(item) {
 		$item.gs('remove');
 	};
 	this.undo = function undo() {
-		$prev.gs('deInit');
-		$item.prependAfter($prev, "#Zeichenbereich").gs('reInit');
-		$prev.gs('reInit');
+		$item.insertAfter($prev);
 	};
 	this.getText = function getText() {
 		return "Löschen";
@@ -159,4 +156,17 @@ function HistoryItemChLayerDown(item) {
 	HistoryItemChLayer.call(this, item, function ($item) {
 		$item.insertBefore($item.prev(".zeichen"));
 	});
+}
+
+function HistoryItemBackground(newUrl) {
+	var oldUrl = $("#Hg").attr('src');
+	this.redo = function redo() {
+		$("#Hg").attr('src',newUrl);
+	}
+	this.undo = function undo() {
+		$("#Hg").attr('src',oldUrl);
+	}
+	this.getText = function getText() {
+		return "Hintergrunz ändern";
+	}
 }

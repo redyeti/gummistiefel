@@ -50,6 +50,7 @@ function Zeichenbereich(area) {
 		$hg.attr("src","bilder/hintergrunz/Back.png");
 		$(area).find("*").not($hg).remove();
 		nextId = 1;
+		this.selectionFix();
 		return this;
 	}
 
@@ -114,6 +115,15 @@ function Zeichenbereich(area) {
 				)
 			)
 		);
+
+		$(".objSpecificInfo").hide();
+		if ($selection.filter("img").length) {
+			$("#objGraphic").show()
+		}
+		if ($selection.filter("div").length) {
+			$("#objText").show()
+		}
+
 		return this;
 	};
 
@@ -215,13 +225,6 @@ $.fn.gs = function(fn) {
 	else
 		return result;
 }
-
-/*
-ZeichenElement.deselectAll
-*/
-
-ZeichenBild.prototype = new ZeichenElement;
-ZeichenBild.prototype.constructor = ZeichenBild;
 
 function ZeichenBild(attributes) {
 	ZeichenElement.call(this);

@@ -1,5 +1,6 @@
 var hintergrunzDateien = [
 	'Back.png',
+	'Mond.PNG',
  	'BackWeiss.png',
-	'Mond.PNG'
+	'Transparent.png'
 ];

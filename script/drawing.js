@@ -11,6 +11,7 @@ function Zeichenbereich(area) {
 	this.history = new History();
 
 	var nextId = 1;
+	var suspended = false;
 
 	this.getID = function getID () {
 		return nextId++;
@@ -121,18 +122,32 @@ function Zeichenbereich(area) {
 	}
 
 	this.suspend = function suspend() {
+		if (suspended)
+			throw "Do not double suspend.";
+
 		$(area).find(".zeichen").each(function () {
 			$(this).data('gum-ft', new Copy($(this).data('freetrans')));
 			$(this).freetrans('destroy');
 		});
+		if ($("ft-controls, ft-container").length)
+			throw "Could not destroy freetrans.";
+		suspended = true;
 		return this;
 	}
 	this.resume = function resume() {
+		if (!suspended)
+			throw "Do not double resume.";
+
 		$(area).find(".zeichen").each(function () {
 			$(this).freetrans(new Copy($(this).data('gum-ft')));
 		});
-		this.select(this.getSelection());
+		this.selectionFix();
+		suspended = false;
 		return this;
+	}
+
+	this.selectionFix = function selectionFix() {
+		this.select(this.getSelection().filter(":visible"));
 	}
 
 	/*
@@ -208,7 +223,6 @@ ZeichenElement.deselectAll
 ZeichenBild.prototype = new ZeichenElement;
 ZeichenBild.prototype.constructor = ZeichenBild;
 
-//ZeichenBild.prototype = ZeichenElement.prototype;
 function ZeichenBild(attributes) {
 	ZeichenElement.call(this);
 	this.getTemplate = function getTemplate() {
@@ -218,8 +232,8 @@ function ZeichenBild(attributes) {
 	
 }
 
-ZeichenText.prototype = new ZeichenElement;
 function ZeichenText(attributes) {
+	ZeichenElement.call(this);
 	this.getTemplate = function getTemplate() {
 		return '<div><%= text %></div>';
 	};

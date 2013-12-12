@@ -36,14 +36,22 @@ function History() {
 	};
 
 	this.undo = function undo() {
+		window.scene.suspend()
 		actionStack[--nextAction].undo();
 		updateButtons();
+		if ($("#Hg").prev().length)
+			throw "Invalid state.";
+		window.scene.resume()
 		return this;
 	};
 
 	this.redo = function redo() {
+		window.scene.suspend()
 		actionStack[nextAction++].redo();
 		updateButtons();
+		if ($("#Hg").prev().length)
+			throw "Invalid state.";
+		window.scene.resume()
 		return this;
 	};
 

@@ -40,17 +40,45 @@ $(function () {
 	});
 
 	$("#btnNeu").click(function () {
-		if (window.scene.history.isEmpty()) {
-			window.scene.clear();
-		} else {
-			$("<div title='Neues Bild erstellen?'>Wenn du ein neues Bild erstellst, wird all deine bisherige Arbeit vernichtet, wenn du sie nicht gespeichert hast. Trotzdem ein neues Bild erstellen?</div>").dialog({
-				modal: true,
-				buttons: {
-					'Ja, ich will!': function () { window.scene.clear(); $(this).dialog("close"); },
-					'Doch behalten': function () { $(this).dialog("close"); }
-				}	
-			});
-		}
+		$("<div title='Neues Bild erstellen?'>Wenn du ein neues Bild erstellst, wird all deine bisherige Arbeit vernichtet, wenn du sie nicht gespeichert hast. Trotzdem ein neues Bild erstellen?</div>").dialog({
+			modal: true,
+			buttons: {
+				'Ja, ich will!': function () { window.scene.clear(); $(this).dialog("close"); },
+				'Doch behalten': function () { $(this).dialog("close"); }
+			},
+			close: function() { $(this).dialog("destroy"); }	
+		});
+	});
+
+	$("#btnSpeichern").click(function () {
+		var $tabs = [
+			"Speichern als: <select>",
+			"		<option value='spGum'>Gum</option>",
+			"		<option value='spSvg'>Svg</option>",
+			"		<option value='spPng'>Png</option>",
+			"</select>",
+			"<div id='spGum'>Gum-Dateien sind dem Kamelbaukasten sein eigenes Dateiformat. Hier steht nur das absolut nötigste drin, dafür kann das Format zwar vom Kamelbaukasten, aber auch von keinem anderen Grafikprogramm gelesen werden. Gum steht natürlich für Gummistiefel.</div>",
+			"<div id='spSvg'>SVGs werden vielleicht ein bisschen größer als PNGs, können dafür aber auch wieder geladen und bearbeitet werden.<br>Tipp: Benutze die Dateiendung .gs.svg (nur) für Dateien die direkt mit dem Kamelbaukasten erstellt wurden, so ist schon durch die Endung klar, ob die Dateien wieder geladen werden können.</div>",
+			"<div id='spPng'>PNGs können vom Kamelbaukasten nur geschrieben, aber später nicht mehr geladen werden.</div>"
+		].join(" ");
+		var $dialog = $("<div title='Speichern'></div>").append($tabs);
+		var $select = $dialog.find("select");
+		$select.change(function() {
+			var id = '#'+$(this).val();
+			$(this).parent().find("div").not(id).hide();
+			$(id).show();
+		});
+		$select.trigger('change');
+
+		$dialog.dialog({
+			modal: true,
+			minWidth: 600,
+			buttons: {
+				'Speichern': function () { $(this).dialog("close"); },
+				'Abbrechen': function () { $(this).dialog("close"); }
+			},
+			close: function() { $(this).dialog("destroy"); }	
+		});
 	});
 
 	$("#btnDup").click(function() {
@@ -70,6 +98,29 @@ $(function () {
 	});
 	$("#btnUp").click(function() {
 		window.scene.history.append(new HistoryItemChLayerUp(window.scene.getSelection())).redo();
+	});
+
+	// keys
+	$(document).on('keydown', function(e) {
+		if ($(e.target).is('input, textarea'))
+			return;   
+		console.log(""+(e.shiftKey?"S":"")+(e.ctrlKey?"^":"")+(e.altKey?"A":"")+(e.metaKey?"M":""), e.which);
+		if (e.which === 46 /*DEL*/) {
+			$("#btnDel:visible").click();
+			e.preventDefault();
+		}
+		/*
+ 			DEL - löschen
+			D - Duplizieren
+			Pfeiltasten - Objekt verschieben (Shift für mehr/weniger)
+			^Z, Shift-^Z - das übliche
+			L, R - drehen
+			P, N, - vorhergehendes, nächstes Element
+			ESC - nichts auswählen
+			^S, ^N, ^O - speichern, neu, laden
+			^I - import
+			F1, H, ^H - Hilfe
+		*/
 	});
 
 	window.scene = new Zeichenbereich('#Zeichenbereich');

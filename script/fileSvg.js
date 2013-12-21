@@ -5,7 +5,7 @@
  * Außerdem: Gummistiefel-Metadaten einbinden, so dass man das SVG auch wieder laden kann.
  */
 
-function SVGWriter() {
+function SVGWriter(linkOnly) {
 	var svg = ['<svg',
 		'version="1.1"',
 		'xmlns="http://www.w3.org/2000/svg"',
@@ -34,17 +34,20 @@ function SVGWriter() {
 
 				translate1 = 'translate(' + t1[0] + ',' + t1[1] + ') ';
 				translate2 = 'translate(' + t2[0] + ',' + t2[1] + ') ';
-				//translate1 = 'translate(' + (f.x+ox) + ',' + (f.y+oy) + ') ';
-				//translate2 = 'translate(' + (-ox) + ',' + (-oy) + ') ';
 			}
 
-			// prepare Image
-			var $canvas = $("<canvas>");
-			$canvas[0].width = $el.width();
-			$canvas[0].height = $el.height();
-			var context = $canvas[0].getContext("2d");
-			context.drawImage($el[0], 0, 0, $el.width(), $el.height());		
-			var url =  $canvas[0].toDataURL();
+			var url;
+			if (linkOnly) {
+				url = location.href.replace(/[^/]*$/,"") + $el.attr('src');
+			} else {
+				// prepare Image
+				var $canvas = $("<canvas>");
+				$canvas[0].width = $el.width();
+				$canvas[0].height = $el.height();
+				var context = $canvas[0].getContext("2d");
+				context.drawImage($el[0], 0, 0, $el.width(), $el.height());		
+				url =  $canvas[0].toDataURL();
+			}
 
 			d["xlink:href"] = url;
 			d.id = $el.attr('id');
@@ -73,8 +76,8 @@ function SVGWriter() {
 	}
 }
 
-function scene2svg() {
-	var w = new SVGWriter()
+function scene2svg(linkOnly) {
+	var w = new SVGWriter(linkOnly)
 	scene.suspend();
 	$("#Zeichenbereich").children().each(function () {
 	    w.draw(this);

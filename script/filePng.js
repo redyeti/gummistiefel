@@ -1,23 +1,69 @@
+"use strict;"
 /*
  *  Wie man ganz im Prinzip png-Dateien erzeugen kann!
  *  Achtung, canvas taints usw. beachten
  */
 
-$c = $("<canvas>");
-$c.width("800px").height("600px");
-$c[0].width = 800;
-$c[0].height = 600;
-c=$c[0].getContext("2d");
-c.drawImage($("#Hg")[0], 0, 0);
+function PNGWriter() {
+	var $canvas = $("<canvas>");
+	$canvas[0].width = 800;
+	$canvas[0].height = 600;
+	var context = $canvas[0].getContext("2d");
 
-f = $("#1").data('freetrans');
-ox = $('#1')[0].clientWidth / 2;
-oy = $('#1')[0].clientHeight / 2;
+	context.textBaseline = "top";
+	context.textAlign = "left";
 
-c.translate(f.x + ox, f.y + oy);
-c.scale(f.scalex, f.scaley);
-c.rotate(f.angle * Math.PI / 180);
-c.drawImage($("#1")[0], -ox, -oy);
+	this.draw = function draw(el) {
+		var $el = $(el);
+		context.save();
+
+		var f = $el.data('gum-ft');
+		if (f) {
+			var ox = $el[0].clientWidth;
+			var oy = $el[0].clientHeight;
 
 
-location.href = $c[0].toDataURL()
+			// freetrans gibt die x- und y-Koordinaten sehr merkwürdig an:
+			// der x-wert bezeichnet die Stelle, der rechten unteren Ecke,
+			// abzüglich der unskalierten Breite des Objektes; y Analog.
+			// Demnach liegt der Mittelpunkt bei x+(1-scalex/2)*breite.
+			// Daher ergibt sich folgede Berechnung:
+			context.translate(f.x + (1-f.scalex/2.0)*ox, f.y + (1-f.scaley/2.0)*oy);
+			context.rotate(f.angle * Math.PI / 180);
+			context.scale(f.scalex, f.scaley);
+			context.translate(-0.5*ox, -0.5*oy);
+		} 	
+
+		if ($el.is('img')) {
+			console.log("draw", $el.attr('src'));
+			context.drawImage($el[0], 0, 0, $el.width(), $el.height());		
+		} else if ($el.is('div')) {
+			context.fillStyle = $el.css('color');
+			context.font = (function (e) { 
+				var out = [];
+				for (var x in e) {
+					out.push($el.css(x));
+				}
+				return out.join(" ");
+			})(["font-family", "font-size", "font-weight"])
+			context.fillText($el.text(),-ox,-oy);
+		} else {
+			throw "Invalid object.";
+		}
+		context.restore();
+	}
+
+	this.getUrl = function() {
+		return $canvas[0].toDataURL();
+	}
+}
+
+function scene2png() {
+	var w = new PNGWriter()
+	scene.suspend();
+	$("#Zeichenbereich").children().each(function () {
+	    w.draw(this);
+	});
+	scene.resume();
+	return w.getUrl();
+}

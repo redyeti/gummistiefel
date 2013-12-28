@@ -51,34 +51,7 @@ $(function () {
 	});
 
 	$("#btnSpeichern").click(function () {
-		var $tabs = [
-			"Speichern als: <select>",
-			"		<option value='spGum'>Gum</option>",
-			"		<option value='spSvg'>Svg</option>",
-			"		<option value='spPng'>Png</option>",
-			"</select>",
-			"<div id='spGum'>Gum-Dateien sind dem Kamelbaukasten sein eigenes Dateiformat. Hier steht nur das absolut nötigste drin, dafür kann das Format zwar vom Kamelbaukasten, aber auch von keinem anderen Grafikprogramm gelesen werden. Gum steht natürlich für Gummistiefel.</div>",
-			"<div id='spSvg'>SVGs werden vielleicht ein bisschen größer als PNGs, können dafür aber auch wieder geladen und bearbeitet werden.<br>Tipp: Benutze die Dateiendung .gs.svg (nur) für Dateien die direkt mit dem Kamelbaukasten erstellt wurden, so ist schon durch die Endung klar, ob die Dateien wieder geladen werden können.</div>",
-			"<div id='spPng'>PNGs können vom Kamelbaukasten nur geschrieben, aber später nicht mehr geladen werden.</div>"
-		].join(" ");
-		var $dialog = $("<div title='Speichern'></div>").append($tabs);
-		var $select = $dialog.find("select");
-		$select.change(function() {
-			var id = '#'+$(this).val();
-			$(this).parent().find("div").not(id).hide();
-			$(id).show();
-		});
-		$select.trigger('change');
-
-		$dialog.dialog({
-			modal: true,
-			minWidth: 600,
-			buttons: {
-				'Speichern': function () { $(this).dialog("close"); },
-				'Abbrechen': function () { $(this).dialog("close"); }
-			},
-			close: function() { $(this).dialog("destroy"); }	
-		});
+		new SaveDialog();
 	});
 
 	$("#btnHg").click(function () {
@@ -133,23 +106,92 @@ $(function () {
 	$(document).on('keydown', function(e) {
 		if ($(e.target).is('input, textarea'))
 			return;   
-		console.log(""+(e.shiftKey?"S":"")+(e.ctrlKey?"^":"")+(e.altKey?"A":"")+(e.metaKey?"M":""), e.which);
-		if (e.which === 46 /*DEL*/) {
-			$("#btnDel:visible").click();
+
+		// TODO: Use meta on mac instead of WHICH key?
+		var evt = (e.ctrlKey?"C":"") + (e.shiftKey?"S":"") + (e.altKey?"A":"") + (e.metaKey?"M":"") + e.which;
+
+		console.log("Key Event", evt);
+		var bindings = {
+			/*
+				D - Duplizieren
+				Pfeiltasten - Objekt verschieben (Shift für mehr/weniger)
+				^Z, Shift-^Z - das übliche
+				L, R - drehen
+				P, N, - vorhergehendes, nächstes Element
+				ESC - nichts auswählen
+				^S, ^N, ^O - speichern, neu, laden
+				^I - import
+				F1, H, ^H - Hilfe
+			*/
+			// DEL - löschen
+			46: function () { $("#btnDel:visible").click(); },
+			// T - Text einfügen
+			84: function () { $("#btnText").click(); }			
+		}
+		var currentBinding = bindings[evt];
+		if (currentBinding) {
+			currentBinding();
 			e.preventDefault();
 		}
-		/*
- 			DEL - löschen
-			D - Duplizieren
-			Pfeiltasten - Objekt verschieben (Shift für mehr/weniger)
-			^Z, Shift-^Z - das übliche
-			L, R - drehen
-			P, N, - vorhergehendes, nächstes Element
-			ESC - nichts auswählen
-			^S, ^N, ^O - speichern, neu, laden
-			^I - import
-			F1, H, ^H - Hilfe
-		*/
+
+
+	});
+
+	$("#btnText").click( function (evt) {
+		new ZeichenText({text: "Text"});
+	});
+
+	$("#fColor").spectrum({
+		color: "#000",
+		showInput: true,
+		showPalette: true,
+		palette: [
+			['black', 'gray', 'silver', 'white', 'maroon', 'red', 'yellow', 'fuchsia'],
+			['olive', 'green', 'lime', 'teal', 'navy', 'blue', 'aqua', 'purple', ],
+		],
+		showSelectionPalette: true,
+		preferredFormat: "name",
+		showInitial: true,
+		change: function(color) {
+			scene.history.append(new HistoryItemCSS(window.scene.getSelection(), 'color', color.toHexString())).redo();
+		}
+	});
+
+	$("#fFamily").autocomplete({
+		delay: 0,
+		minLength: 0,
+		source: [
+			'Arial',
+			'Arial Black',
+			'Century Schoolbook',
+			'Comic Sans MS',
+			'Garamond',
+			'Helvetica',
+			'Impact',
+			'Lucida Console',
+			'Rockwell',
+			'Times New Roman',
+			'Verdana',
+			'serif',
+			'sans-serif',
+			'monospace',
+			'fantasy',
+			'cursive'
+		]
+});
+	$("#fFamily").focus(function () {
+		$(this).autocomplete('search', '');
+	});
+	$("#fFamily").click(function () { $(this).trigger('focus'); });
+
+	//FIXME: this does not work! --> event of autocomplete? (+ enter)
+	$("#fFamily").blur(function () { scene.history.append(new HistoryItemCSS(scene.getSelection(), 'font-family', $(this).val())).redo(); console.log("c");});
+	$("#fFamily").change(function () { scene.history.append(new HistoryItemCSS(scene.getSelection(), 'font-family', $(this).val())).redo(); console.log("c");});
+
+
+	$("#fText").change(function() {
+		window.scene.history.append(new HistoryItemText(scene.getSelection(), $(this).val())).redo();
+		
 	});
 
 	window.scene = new Zeichenbereich('#Zeichenbereich');

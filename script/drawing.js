@@ -41,9 +41,11 @@ function Zeichenbereich(area) {
 		return false;
 	});
 	$hg.on('mousedown', function(evt) {
-		myzb.select(null);
+		// Benutze Timeout, um sicherzustellen, dass 
+		// andere Events (change, etc.) vorher ablaufen,
+		// die das aktuell ausgewählte Objekt beeinflussen.
+		window.setTimeout(function () {myzb.select(null);}, 0);
 	});
-
 
 	this.clear = function clear() {
 		this.history.clear();
@@ -121,7 +123,10 @@ function Zeichenbereich(area) {
 			$("#objGraphic").show()
 		}
 		if ($selection.filter("div").length) {
-			$("#objText").show()
+			$("#fFamily").val($s.css('font-family'));
+			$("#fColor").spectrum('set', $s.css('color'));
+			$("#fText").val($s.text());
+			$("#objText").show();
 		}
 
 		return this;
@@ -174,8 +179,7 @@ function ZeichenElement(selector) {
 		attributes.uoid = scene.getID();
 
 		// Rendern und Anzeigen
-		var template = this.getTemplate();
-		this.$selector = $(new EJS({text: template}).render(attributes));
+		this.$selector = $(this.create(attributes));
 		// Zur Scene und zur History hinzufügen
 		window.scene.history.append(new HistoryItemCreate(this)).redo();
 	}
@@ -228,8 +232,14 @@ $.fn.gs = function(fn) {
 
 function ZeichenBild(attributes) {
 	ZeichenElement.call(this);
-	this.getTemplate = function getTemplate() {
-		return '<img alt="" title="" id="<%= uoid %>" src="<%= src %>" class="zeichen" />';
+	this.create = function create() {
+		return crel('img', {
+			alt: "",
+			title: "",
+			id: attributes.uoid,
+			src: attributes.src,
+			'class': "zeichen"
+			});
 	};
 	this.render(attributes);
 	
@@ -237,8 +247,14 @@ function ZeichenBild(attributes) {
 
 function ZeichenText(attributes) {
 	ZeichenElement.call(this);
-	this.getTemplate = function getTemplate() {
-		return '<div><%= text %></div>';
-	};
+	this.create = function create() {
+		return crel('div', {
+			id: attributes.uoid,
+			style: "cursor: pointer; font-size: 40pt;",
+			'class': "zeichen"
+			},
+		attributes.text);
+			
+	}
 	this.render(attributes);
 }

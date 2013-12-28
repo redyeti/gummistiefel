@@ -54,6 +54,23 @@ function HistoryItemTransformField(element, prop, after, factor) {
 	}
 }
 
+function HistoryItemText(element, after) {
+	var $element = $(element);
+	var before = $element.text();
+	
+	this.redo = function redo() {
+		$element.text(after);
+	};
+
+	this.undo = function undo() {
+		$element.text(before);
+	};
+
+	this.getText = function getText() {
+		return "Text";
+	}
+}
+
 function HistoryItemCSS(element, prop, after) {
 	var $element = $(element);
 	var before = $element.css(prop);
@@ -67,7 +84,7 @@ function HistoryItemCSS(element, prop, after) {
 	};
 
 	this.getText = function getText() {
-		return "CSS-Eigenschaft " + prop;
+		return "Style (" + prop + ")";
 	}
 }
 

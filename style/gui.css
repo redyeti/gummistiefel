@@ -194,3 +194,15 @@ img {
 .bshg {
 	background-image: url("../bilder/bildseitenhintergrund.png");
 }
+
+table.inputs {
+	width: 100%;
+}
+/* FIXME: Only second column! */
+table.inputs td {
+	padding-right: 10px;
+}
+
+table.inputs input, table.inputs textarea {
+	width: 100%;
+}

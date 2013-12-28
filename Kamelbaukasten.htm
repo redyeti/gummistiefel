@@ -22,6 +22,8 @@
 	<script type="text/javascript" src="jslibs/jquery-1.9.1.js"></script>
 	<script type="text/javascript" src="jslibs/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
 	<link rel="StyleSheet" href="jslibs/jquery-ui-1.10.3.custom/css/pepper-grinder/jquery-ui-1.10.3.custom.min.css">
+	<script type="text/javascript" src="jslibs/bgrins-spectrum-28ab793/spectrum.js"></script>
+	<link rel="StyleSheet" href="jslibs/bgrins-spectrum-28ab793/spectrum.css">
 
 	<!-- templates und so -->
 	<script type="text/javascript" src="jslibs/ejs/ejs.js"></script>
@@ -45,7 +47,7 @@
 	<script type="text/javascript" src="script/history.js"></script>
 	<script type="text/javascript" src="script/filePng.js"></script>
 	<script type="text/javascript" src="script/fileSvg.js"></script>
-	<script type="text/javascript" src="script/selftest.js"></script>
+	<script type="text/javascript" src="script/saveDialog.js"></script>
 
 	<!-- ganz zum Schluss das Hauptscript ausführen -->
 	<script type="text/javascript" src="script/main.js" charset="UTF-8"></script>
@@ -117,6 +119,19 @@
 			</div>
 			<div class="objSpecificInfo" id="objText">
 				<div>[F][K][I][U][D]</div>
+				<table class="inputs">
+					<tr>
+						<td>Text:</td>
+						<td><input type="text" id="fText"></td>
+					</tr><tr>
+						<td>Schrift:</td>
+						<td><input type="text" id="fFamily"></td>
+					</tr><tr>
+						<td>Farbe:</td>
+						<td><input type="text" id="fColor"></td>
+					</tr>
+				</table>
+				</textarea>
 				<div>Größe, Farbe (Palette, Picker), Font(-family), Strichstärke, Text (!)</div>
 			</div>
 		</div>

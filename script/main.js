@@ -195,6 +195,23 @@ $(function () {
 	});
 
 	window.scene = new Zeichenbereich('#Zeichenbereich');
+
+	var oldfreetrans = $.fn.freetrans;
+	console.log(oldfreetrans);
+	$.fn.freetrans = function() {
+		var t = this;
+		var $this = this;
+		var args = arguments;
+		if ($this.width() == 0 || $this.height == 0){
+			// use deferred freetrans if necessary
+			$this.load(function() {
+				oldfreetrans.apply(t, args);
+			});
+			return $this;
+		} else {
+			return oldfreetrans.apply(this, args);
+		}
+	}
 });
 
 function iframe_dialog(title, src) {

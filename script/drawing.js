@@ -73,6 +73,16 @@ function Zeichenbereich(area) {
 	this.updateObjInfo = function updateObjInfo() {
 		var $s = $($selection);
 		var f = $s.data('freetrans');
+
+		// if not yet initialized, deferred update
+		if (f == null) {
+			var h = this;
+			$s.load(function () {
+				h.updateObjInfo();
+			})
+			return;
+		}
+
 		var o = parseFloat($s.css('opacity')).toFixed(3);
 		o = o.replace(/\.([0-9][1-9]*)0*/, ".$1");
 
@@ -194,9 +204,12 @@ function ZeichenElement(selector) {
 	}
 
 	this.insert = function insert() {
+		var handle = this;
+		this.$selector.load(function () {
+			handle.$selector.freetrans({x:20, y:20});
+			handle.init();
+		});
 		$("#Zeichenbereich").append(this.$selector);
-		this.$selector.freetrans({x:20, y:20});
-		this.init();
 	}
 
 	this.deInit = function deInit() {

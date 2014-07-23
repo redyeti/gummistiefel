@@ -196,3 +196,14 @@ $(function () {
 
 	window.scene = new Zeichenbereich('#Zeichenbereich');
 });
+
+function iframe_dialog(title, src) {
+	$("#iframeDialog iframe").attr('src', src);
+	$("#iframeDialog").attr('title', title).show().dialog({
+		width: 800,
+		height: 600,
+		buttons: {
+			'Ok': function () { $(this).dialog("close"); }
+		}
+	});
+}

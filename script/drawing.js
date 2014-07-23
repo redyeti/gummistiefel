@@ -14,7 +14,7 @@ function Zeichenbereich(area) {
 	var suspended = false;
 
 	this.getID = function getID () {
-		return nextId++;
+		return 'element_'+(nextId++);
 	}
 
 	var $selection = $(null);
@@ -94,7 +94,7 @@ function Zeichenbereich(area) {
 			return out;
 		}
 
-		$("#objId").val($s.attr('id'));
+		$("#objId").val($s.attr('id').substr(8));
 		$("#objPos").empty().append(
 			crel("table", {style: "white-space: nowrap;"},
 				crel("tr",

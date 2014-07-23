@@ -203,15 +203,6 @@ function ZeichenElement(selector) {
 		this.$selector.data('gum-ft', new Copy(this.$selector.data('gum-ft')));
 	}
 
-	this.insert = function insert() {
-		var handle = this;
-		this.$selector.load(function () {
-			handle.$selector.freetrans({x:20, y:20});
-			handle.init();
-		});
-		$("#Zeichenbereich").append(this.$selector);
-	}
-
 	this.deInit = function deInit() {
 		if (this.$selector.data('freetrans'))
 			this.$selector.freetrans('destroy');
@@ -254,6 +245,16 @@ function ZeichenBild(attributes) {
 			'class': "zeichen"
 			});
 	};
+
+	this.insert = function insert() {
+		var handle = this;
+		this.$selector.load(function () {
+			handle.$selector.freetrans({x:20, y:20});
+			handle.init();
+		});
+		$("#Zeichenbereich").append(this.$selector);
+	}
+
 	this.render(attributes);
 	
 }
@@ -269,5 +270,13 @@ function ZeichenText(attributes) {
 		attributes.text);
 			
 	}
+
+	this.insert = function insert() {
+		var handle = this;
+		$("#Zeichenbereich").append(this.$selector);
+		handle.$selector.freetrans({x:20, y:20});
+		handle.init();
+	}
+
 	this.render(attributes);
 }

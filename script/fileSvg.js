@@ -93,15 +93,19 @@ function SVGWriter(linkOnly) {
 	this.getDom = function getDom() {
 		return $svg;
 	}
-	this.getUrl = function getUrl() {
+	this.getUrl = function getUrl(callback) {
 		console.log("get the url...");
 		//this is a bit of a hack ...
 		var data = $("<div>").append($svg).html();
-		return "data:image/svg+xml," + encodeURIComponent(data);
+		callback("data:image/svg+xml," + encodeURIComponent(data));
+	}
+
+	this.getData = function getData() {
+		return $("<div>").append($svg).html();
 	}
 }
 
-function scene2svg(linkOnly) {
+function scene2svg(callback, linkOnly) {
 	var w = new SVGWriter(linkOnly)
 	scene.suspend();
 	$("#Zeichenbereich").children().each(function () {
@@ -109,5 +113,5 @@ function scene2svg(linkOnly) {
 	});
 	scene.resume();
 	//return w.getDom()
-	return w.getUrl();
+	w.getUrl(callback);
 }

@@ -7,7 +7,8 @@
 $(function () {
 	// Initialisiere Bilder links
 	
-	loadLibrary("traditionell");
+	//loadLibrary("traditionell");
+	loadLibrary("vector");
 
 	$("#btnRueck").click(function () {
 		if ($(this).hasClass("disabled"))

@@ -1,7 +1,7 @@
 if (!window.library)
 	window.library = {};
 
-window.library['traditionell'] = [
+window.library['vector'] = [
 	['GS_gruen1.svg', "height: 50px"],
 	['Bastelpyramidegr.svg', "width: 60px"],
 	['GS_BritishLemur.svg', "height: 45px"],

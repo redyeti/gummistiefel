@@ -1,5 +1,5 @@
 <?xml version="1.0" standalone="yes"?>
-<svg width="17" height="16">
+<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16">
 <path style="fill:#000000; stroke:none;" d="M5 0C-5.53366 3.51122 1.76617 21.1169 12 16C21.0786 11.4607 15.026 -3.34199 5 0z"/>
 <path style="fill:#9b9b9b; stroke:none;" d="M6 1L6 2L11 2L6 1z"/>
 <path style="fill:#ffffff; stroke:none;" d="M12 14L12 12L6 8L10 5L14 7C14 2.58826 8.35818 -0.377188 4 2C0.868511 3.70809 0.868509 12.2919 4 14C5.58493 14.8645 10.1458 14 12 14z"/>

@@ -11,4 +11,5 @@ autotrace \
 	--error-threshold 1\
 	--despeckle-level 20\
 	--dpi 150 \
-	inter/"${1%.gif}".ppm  > out/"${1%.gif}".svg
+	inter/"${1%.gif}".ppm  > "${1%.gif}".svg
+sed -i 's~<svg~<svg xmlns="http://www.w3.org/2000/svg"~' "${1%.gif}".svg

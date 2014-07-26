@@ -1,4 +1,7 @@
-var bibliothek = [
+if (!window.library)
+	window.library = {};
+
+window.library['traditionell'] = [
 	['GS_gruen1.gif', "height: 50px"],
 	['Bastelpyramidegr.gif', "width: 60px"],
 	['GS_BritishLemur.gif', "height: 45px"],

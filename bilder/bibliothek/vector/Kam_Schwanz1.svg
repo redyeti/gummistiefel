@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="yes"?>
+<svg width="35" height="75">
+<path style="fill:#040204; stroke:none;" d="M2 0L1 3C3.6733 2.46534 3.47906 1.47906 2 0z"/>
+<path style="fill:#434124; stroke:none;" d="M3 1C4.21141 7.05705 11.4903 6.24837 16 7C13.7455 2.49097 7.63159 1.77193 3 1z"/>
+<path style="fill:#040204; stroke:none;" d="M5 1L7 2L5 1z"/>
+<path style="fill:#17150e; stroke:none;" d="M3 3L5 4L3 3z"/>
+<path style="fill:#040204; stroke:none;" d="M11 6L14 10L11 6z"/>
+<path style="fill:#848244; stroke:none;" d="M12 6L16 12L18 19L17 20L19 20L22 32L21 32L21 30L20 30C20.2826 31.6958 21.7896 32.7374 22 34L21 34L22 36C20.641 40.7566 19.289 53.0076 21 57L20 59C20 62.3818 21.6929 64 25 64C23.5909 61.1817 22.0567 60.766 25 59C24.5655 57.6966 23 54.2502 23 53L24 53C25.0385 46.7688 23 39.5434 23 34C23 31.5787 24.5232 28.1391 24 25L22 24C20.1944 20.9907 24.3991 17.8999 19 17L19 11L12 6z"/>
+<path style="fill:#444224; stroke:none;" d="M16 7L19 11L16 7z"/>
+<path style="fill:#2d2b18; stroke:none;" d="M14 10L15 16L16 16L14 10z"/>
+<path style="fill:#514f2a; stroke:none;" d="M19 11L20 14L19 11z"/>
+<path style="fill:#5a582f; stroke:none;" d="M19 15L19 17L21 17L21 15L19 15z"/>
+<path style="fill:#13110b; stroke:none;" d="M16 16L18 19L16 16z"/>
+<path style="fill:#19170f; stroke:none;" d="M17 20L17 22L19 20L17 20z"/>
+<path style="fill:#37351e; stroke:none;" d="M21 21L24 25L21 21z"/>
+<path style="fill:#3f3d22; stroke:none;" d="M19 24L21 32L22 32L19 24z"/>
+<path style="fill:#040204; stroke:none;" d="M24 28L25 29L24 28M20 32L21 37L22 37L20 32z"/>
+<path style="fill:#110f0a; stroke:none;" d="M23 33L24 35L23 33z"/>
+<path style="fill:#040204; stroke:none;" d="M24 35L23 54L25 54L24 35z"/>
+<path style="fill:#5e5c31; stroke:none;" d="M20 36L20 50L21 50L20 36z"/>
+<path style="fill:#040204; stroke:none;" d="M20 50L20 54L21 54L20 50M20 56L20 59L21 59L20 56z"/>
+<path style="fill:#110f0a; stroke:none;" d="M23 59L23 62L24 62L23 59z"/>
+<path style="fill:#040204; stroke:none;" d="M20 60C20 65.068 22.5855 71.8048 28 70L30 73L28 70C29.4097 65.771 25.8309 66.0588 23 64C21.2697 62.7416 20.8531 60.8531 20 60M24 67L23 68L24 67M26 69L25 70L26 69M33 71L34 72L33 71z"/>
+</svg>

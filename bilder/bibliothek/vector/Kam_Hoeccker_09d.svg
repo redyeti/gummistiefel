@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="yes"?>
+<svg width="93" height="58">
+<path style="fill:#040204; stroke:none;" d="M1 2L1 48L2 48L2 3L44 3L44 41L45 54L51 54L51 53C43.7475 53 45 46.4798 45 41L45 2L1 2z"/>
+<path style="fill:#110f0b; stroke:none;" d="M56 2L56 3L88 3L88 36L89 51L90 41L90 13L89 2L80 2L56 2z"/>
+<path style="fill:#1e1c11; stroke:none;" d="M2 3L2 57L3 57L3 17L2 3z"/>
+<path style="fill:#848244; stroke:none;" d="M3 3L4 57L34 56L46 56L89 53L88 49L88 34L88 3L57 3L57 35C57 38.1509 58.3785 45.243 57 48C55.8236 50.3527 48.9043 55.7426 46 54C42.7069 52.0241 44 44.5029 44 41L44 3L3 3z"/>
+<path style="fill:#32301b; stroke:none;" d="M56 3L56 47L57 47L57 15L56 3z"/>
+<path style="fill:#0b0907; stroke:none;" d="M55 47L51 53L57 47L55 47z"/>
+<path style="fill:#444224; stroke:none;" d="M3 48L3 57L4 57L3 48M89 51L89 53L91 51L89 51z"/>
+</svg>

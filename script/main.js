@@ -53,6 +53,9 @@ $(function () {
 	$("#btnSpeichern").click(function () {
 		new SaveDialog();
 	});
+	$("#btnLaden").click(function () {
+		new LoadDialog();
+	});
 
 	$("#btnHg").click(function () {
 		$(crel("div", {title: "Hintergrunz ändern"},

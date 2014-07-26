@@ -1,3 +1,5 @@
+"use strict";
+
 function SaveDialog () {
 
 	var sd = this;
@@ -8,7 +10,7 @@ function SaveDialog () {
 			"		<option value='Svg'>Svg</option>",
 			"		<option value='Png'>Png</option>",
 			"</select>",
-			"<div id='spSvg'>SVGs werden vielleicht ein bisschen größer als PNGs, können dafür aber auch wieder geladen und bearbeitet werden.<br>Tipp: Benutze die Dateiendung .g.svg (nur) für Dateien die direkt mit dem Kamelbaukasten erstellt wurden, so ist schon durch die Endung klar, ob die Dateien wieder geladen werden können.</div>",
+			"<div id='spSvg'>SVGs werden vielleicht ein bisschen größer als PNGs, können dafür aber auch wieder geladen und bearbeitet werden.</div>",
 			"<div id='spPng'>PNGs können vom Kamelbaukasten nur geschrieben, aber später nicht mehr geladen werden.</div>"
 		].join(" ");
 		var $dialog = $("<div title='Speichern'></div>").append($tabs);
@@ -25,7 +27,7 @@ function SaveDialog () {
 			minWidth: 600,
 			buttons: {
 				'Speichern': function () {
-					filetype = $select.val();
+					var filetype = $select.val();
 					$(this).dialog("close");
 					sd.dialog2(filetype);
 				},

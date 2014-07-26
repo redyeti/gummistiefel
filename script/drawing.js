@@ -14,7 +14,9 @@ function Zeichenbereich(area) {
 	var suspended = false;
 
 	this.getID = function getID () {
-		return 'element_'+(nextId++);
+		while ($('element_'+(nextId)).length)
+			nextId++;
+		return 'element_'+(nextId);
 	}
 
 	var $selection = $(null);
@@ -182,11 +184,12 @@ function Zeichenbereich(area) {
  	*/
 }
 
-function ZeichenElement(selector) {
+function ZeichenElement(selector, attributes) {
 	this.$selector = $(selector)
 
-	this.render = function render(attributes) {
-		attributes.uoid = scene.getID();
+	this.render = function render() {
+		if (!attributes.uoid)
+			attributes.uoid = scene.getID();
 
 		// Rendern und Anzeigen
 		this.$selector = $(this.create(attributes));
@@ -218,6 +221,17 @@ function ZeichenElement(selector) {
 		this.$selector.detach();
 	}
 
+	this.getTransformData = function getTransformData() {
+		if (attributes.transformData) {
+			for (var x=0, a; a=['x', 'y', 'angle', 'scalelimit', 'scalex', 'scaley'][x]; x++)
+				attributes.transformData[a] = parseFloat(attributes.transformData[a]);
+			console.log(attributes.transformData);
+			return attributes.transformData;
+		} else {
+			return {x:20, y:20};
+		}
+	}
+
 	/*
 	this.select
 	this.update
@@ -235,7 +249,9 @@ $.fn.gs = function(fn) {
 }
 
 function ZeichenBild(attributes) {
-	ZeichenElement.call(this);
+	ZeichenElement.call(this, null, attributes);
+	var zb = this;
+
 	this.create = function create() {
 		return crel('img', {
 			alt: "",
@@ -249,7 +265,7 @@ function ZeichenBild(attributes) {
 	this.insert = function insert() {
 		var handle = this;
 		this.$selector.load(function () {
-			handle.$selector.freetrans({x:20, y:20});
+			handle.$selector.freetrans(zb.getTransformData());
 			handle.init();
 		});
 		$("#Zeichenbereich").append(this.$selector);
@@ -260,7 +276,7 @@ function ZeichenBild(attributes) {
 }
 
 function ZeichenText(attributes) {
-	ZeichenElement.call(this);
+	ZeichenElement.call(this, null, attributes);
 	this.create = function create() {
 		return crel('div', {
 			id: attributes.uoid,
@@ -274,7 +290,7 @@ function ZeichenText(attributes) {
 	this.insert = function insert() {
 		var handle = this;
 		$("#Zeichenbereich").append(this.$selector);
-		handle.$selector.freetrans({x:20, y:20});
+		handle.$selector.freetrans(this.getTransformData());
 		handle.init();
 	}
 

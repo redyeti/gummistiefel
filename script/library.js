@@ -16,7 +16,7 @@ function loadLibrary(name) {
 
 	// Weise denen auch eine Funktion zu
 	$(".libraryButton").click( function (evt) {
-		console.log(this, this.src);
+		//console.log(this, this.src);
 		new ZeichenBild({src: this.src});
 	});
 

@@ -63,7 +63,7 @@ function History() {
 
 	this.log = function log() {
 		for (var i=0; i<actionStack.length; i++) {
-			console.log(i, actionStack[i], (i == nextAction - 1) ? '*' : null);
+			//console.log(i, actionStack[i], (i == nextAction - 1) ? '*' : null);
 		}
 	};
 

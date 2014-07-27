@@ -20,11 +20,11 @@ function HistoryItemCreate(handle) {
 
 function HistoryItemTransform(element) {
 	var $element = $(element);
-	console.log("CrHist", $element);
+	//console.log("CrHist", $element);
 	var before = new Copy($element.data('gum-ft'));
 	var after = new Copy($element.data('freetrans'));
 
-	console.log($element, '*', before, after);
+	//console.log($element, '*', before, after);
 
 	this.redo = function redo() {
 		$element.data('gum-ft', after);
@@ -138,7 +138,7 @@ function HistoryItemDelete(item) {
 	var $prev = $item.prev();
 	window.scene.resume();
 
-	console.log("del",$item,$prev);
+	//console.log("del",$item,$prev);
 
 	this.redo = function redo() {
 		$item.gs('remove');

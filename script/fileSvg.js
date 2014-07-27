@@ -55,7 +55,7 @@ function SVGWriter(linkOnly) {
 
 		//TODO: also try -webkit-... etc.
 		if ($el.css('transform') != 'none') {
-			console.log($el.css('transform'));
+			//console.log($el.css('transform'));
 			d.transform = translate1 + $el.css('transform') + translate2;
 		}
 
@@ -94,7 +94,7 @@ function SVGWriter(linkOnly) {
 		return $svg;
 	}
 	this.getUrl = function getUrl(callback) {
-		console.log("get the url...");
+		//console.log("get the url...");
 		//this is a bit of a hack ...
 		var data = $("<div>").append($svg).html();
 		callback("data:image/svg+xml," + encodeURIComponent(data));

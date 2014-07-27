@@ -45,7 +45,7 @@ function handleFileSelect(method, match, readyCallback, initCallback) {
 			})(f);
 
 			// Read in the image file as a data URL.
-			console.log(reader[method], method)
+			//console.log(reader[method], method)
 			reader[method](f);
 		}
 	};

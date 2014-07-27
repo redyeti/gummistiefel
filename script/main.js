@@ -133,7 +133,7 @@ $(function () {
 		// TODO: Use meta on mac instead of WHICH key?
 		var evt = (e.ctrlKey?"C":"") + (e.shiftKey?"S":"") + (e.altKey?"A":"") + (e.metaKey?"M":"") + e.which;
 
-		console.log("Key Event", evt);
+		//console.log("Key Event", evt);
 		var bindings = {
 			/*
 				D - Duplizieren
@@ -208,8 +208,8 @@ $(function () {
 	$("#fFamily").click(function () { $(this).trigger('focus'); });
 
 	//FIXME: this does not work! --> event of autocomplete? (+ enter)
-	$("#fFamily").blur(function () { scene.history.append(new HistoryItemCSS(scene.getSelection(), 'font-family', $(this).val())).redo(); console.log("c");});
-	$("#fFamily").change(function () { scene.history.append(new HistoryItemCSS(scene.getSelection(), 'font-family', $(this).val())).redo(); console.log("c");});
+	$("#fFamily").blur(function () { scene.history.append(new HistoryItemCSS(scene.getSelection(), 'font-family', $(this).val())).redo();});
+	$("#fFamily").change(function () { scene.history.append(new HistoryItemCSS(scene.getSelection(), 'font-family', $(this).val())).redo();});
 
 
 	$("#fText").change(function() {
@@ -224,7 +224,7 @@ $(function () {
 	window.scene = new Zeichenbereich('#Zeichenbereich');
 
 	var oldfreetrans = $.fn.freetrans;
-	console.log(oldfreetrans);
+	//console.log(oldfreetrans);
 	$.fn.freetrans = function() {
 		var t = this;
 		var $this = this;

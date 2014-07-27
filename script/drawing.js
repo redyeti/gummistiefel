@@ -97,7 +97,7 @@ function Zeichenbereich(area) {
 			$out.css('width','3em');
 
 			$out.change(function () {
-				console.log("X");
+				//console.log("X");
 				var a = new action($s, attrib, $(this).val(), factor)
 				window.scene.history.append(a).redo();
 			});
@@ -225,7 +225,7 @@ function ZeichenElement(selector, attributes) {
 		if (attributes.transformData) {
 			for (var x=0, a; a=['x', 'y', 'angle', 'scalelimit', 'scalex', 'scaley'][x]; x++)
 				attributes.transformData[a] = parseFloat(attributes.transformData[a]);
-			console.log(attributes.transformData);
+			//console.log(attributes.transformData);
 			return attributes.transformData;
 		} else {
 			return {x:20, y:20};

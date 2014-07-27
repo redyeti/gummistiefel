@@ -45,7 +45,7 @@ function LoadDialog(){
 					guAttrs[attr.name.substr(3)] = attr.value;
 				}
 				//TODO: create element (using custom image add function; be aware of no-history!)
-				console.log('create element', oid, element)
+				//console.log('create element', oid, element)
 				if (type == "svg:image") {
 					var handle = new ZeichenBild({
 						uoid: oid,
@@ -77,7 +77,7 @@ function LoadDialog(){
 					$(this).dialog("close");
 					var xml = $($.parseXML(data));
 					loadImage(xml);
-					console.log(xml);					
+					//console.log(xml);					
 				},
 				'Abbrechen': function () { $(this).dialog("close"); }
 			},

@@ -5,10 +5,20 @@
 "use strict";
 
 $(function () {
+	$("#librarySelect input").button();
+
 	// Initialisiere Bilder links
-	
-	//loadLibrary("traditionell");
-	loadLibrary("vector");
+	$("#libTradi").click(function () {
+		loadLibrary("traditionell");
+	});
+	$("#libVector").click(function () {
+		loadLibrary("vector");
+	});
+	$("#libKamelo").click(function () {
+		new KpLibraryDialog();
+	});
+
+	$("#libTradi").click();
 
 	$("#btnRueck").click(function () {
 		if ($(this).hasClass("disabled"))
@@ -61,7 +71,21 @@ $(function () {
 					output(i);
 				}
 			},
-			crel("div", {"class": "clear"})
+			crel("div", {"class": "clear", style: "margin-bottom: 20px;"}),
+			function(output) {
+				var input = crel("input", {type: "file", style: "display:none;"});
+				input.addEventListener('change', handleFileSelect("readAsDataURL", "image/.*", function(e) {
+					var src = e.target.result;
+					window.scene.history.append(new HistoryItemBackground(src)).redo();
+					$(".ui-dialog-content").dialog('close');
+				}), false);
+				var btn = crel("input", {type: "button", value: "… oder lade eine Datei von deinem Rechner"});
+				$(btn).button();
+				$(btn).click(function(){input.click()});
+				output(btn);
+			},
+			crel("br"),
+			"Sollte 800×600 Pixel groß sein oder zumindest das richtige Seitenverhältnis haben (Bitte Lizenzen beachten)"
 		)).dialog({
 			minWidth: 630,
 			modal: true,
@@ -70,6 +94,17 @@ $(function () {
 			}	
 		});
 	});
+
+	(function () {
+		$("#btnBild").click(function() {
+			var input = crel("input", {type: "file", style: "display:none;"});
+			input.addEventListener('change', handleFileSelect("readAsDataURL", "image/.*", function(e) {
+				var src = e.target.result;
+				new ZeichenBild({src: src});
+			}), false);
+			input.click();
+		});
+	})();
 
 	$("#btnDup").click(function() {
 		window.scene.history.append(new HistoryItemDuplicate(window.scene.getSelection())).redo();

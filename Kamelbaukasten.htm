@@ -80,7 +80,14 @@
 
 	<!-- Die Bildleiste (Library) links - wird mit Javascript gefüllt -->
 	<div id="guiBarLeft" class="guiBox">
-		-- lädt --
+		<div id="librarySelect">
+			<input type="radio" name="library" id="libTradi" value="traditionell" checked><label title="Traditionell" for="libTradi">Trad.</label><!--
+			--><input type="radio" name="library" id="libVector" value="vector"><label title="Vektor" for="libVector">Vek.</label><!--
+			--><!--<input type="radio" name="library" id="libKamelo" value="kamelo"><label title="Kamelopedia" for="libKamelo">KP</label>-->
+		</div>
+		<div id="library">
+			-- lädt --
+		</div>
 	</div>
 
 	<!-- Zeichenbereich -->
@@ -286,16 +293,17 @@
 
 	<div style="Position:absolute; top:700px;left:0px; width:1171px; text-align: right;">
 			Inhalt ist verfübar unter der
-			<a href="gfdl.txt" target="new">"GNU Free Documentation License"</a>&nbsp;▪&nbsp;
+			<a href="gfdl.txt" target="new">"GNU Free Documentation License"</a> und
+			<a href="http://creativecommons.org/licenses/by-sa/3.0/" target="new">"CC-BY-SA</a>&nbsp;▪&nbsp;
 			<a href="#" onclick="iframe_dialog('Autoren','popups/Autoren.html');">Autoren & History</a>
-			&nbsp;▪&nbsp;Kamelopedia:
+			<br>Bildlizenzen können abweichen, wenn eigene Bilder oder Bildsätze aus der Kamelopedia eingebunden werden
+			<br>Kamelopedia:
 			<a href="http://kamelopedia.net/index.php/Hauptseite" target="_blank">Hauptseite</a>
 			&nbsp;▪&nbsp;
 			<a href="http://kamelopedia.net/index.php/Gummistiefel" target="_blank">Gummistiefel</a>
 			&nbsp;▪&nbsp;
 			<a href="http://kamelopedia.net/index.php/Gummistiefel/Galerie" target="_blank">Galerie</a>
 			<br />
-			<p style="font-size:smaller;color:#4D4D4D;">Kopieren, Verbreiten und/oder Verändern ist unter den Bedingungen der GNU Free Documentation License, Version 1.2 oder einer späteren Version, veröffentlicht von der Free Software Foundation, erlaubt. Es gibt keine unveränderlichen Abschnitte, keinen vorderen Umschlagtext und keinen hinteren Umschlagtext. Eine Kopie des Lizenztextes ist unter dem Titel GNU Free Documentation License enthalten.</p>
 	</div>
 
 </body>

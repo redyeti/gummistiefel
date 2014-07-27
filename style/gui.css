@@ -71,10 +71,34 @@ img, .buttons div, .button {
 	height: 596px;
 	margin-top: 0px;
 	position: absolute;
-	background-color: white;
 	padding: 0px;
-	overflow: auto;
 	text-align: center;
+	background-color: white;
+}
+
+#librarySelect {
+	text-align: left;
+	background-color:#DACC8A;
+	height: 24px;
+	font-size: 80%;
+}
+
+#library {
+	height: 572px;
+	overflow: auto;
+}
+
+#librarySelect label {
+	height: 22px;
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px;
+	margin-right: 0px;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 #guiBarRight {

@@ -14,7 +14,7 @@ function Zeichenbereich(area) {
 	var suspended = false;
 
 	this.getID = function getID () {
-		while ($('element_'+(nextId)).length)
+		while ($('#element_'+(nextId)).length)
 			nextId++;
 		return 'element_'+(nextId);
 	}

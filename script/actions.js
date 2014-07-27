@@ -88,6 +88,23 @@ function HistoryItemCSS(element, prop, after) {
 	}
 }
 
+function HistoryItemID(element, after) {
+	var $element = $(element);
+	var before = $element.prop("id").substr(8);
+	
+	this.redo = function redo() {
+		$element.prop("id", "element_"+after);
+	};
+
+	this.undo = function undo() {
+		$element.prop("id", "element_"+before);
+	};
+
+	this.getText = function getText() {
+		return before + " umbenannt zu " + after;
+	}
+}
+
 function HistoryItemDuplicate(orig) {
 	var $orig = $(orig);
 

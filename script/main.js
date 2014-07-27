@@ -217,6 +217,10 @@ $(function () {
 		
 	});
 
+	$("#objId").change(function() {
+		window.scene.history.append(new HistoryItemID(scene.getSelection(), $(this).val())).redo();
+	});
+
 	window.scene = new Zeichenbereich('#Zeichenbereich');
 
 	var oldfreetrans = $.fn.freetrans;

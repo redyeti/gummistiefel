@@ -1,0 +1,24 @@
+body {
+	font-size: 9pt;
+	color: #202020; 
+	font-family: sans-serif; 
+	padding: 0px; 
+	background-color: #F1E9C1;
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	font-size: 9pt;
+	color: #000252; 
+	font-family: sans-serif; 
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+body {
+	margin: 0px 15px 0px 15px;
+}
